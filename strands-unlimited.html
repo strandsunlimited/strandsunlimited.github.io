@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strands Unlimited Game</title>
+    <title>Strands Unlimited Game - Modified Layout</title>
     <style>
         * {
             margin: 0;
@@ -54,8 +54,8 @@
             border: 3px solid var(--border-color);
             border-radius: 8px;
             padding: 20px;
-            max-width: 500px;
-            width: 100%;
+            width: 90%; /* Make it wider to accommodate side-by-side elements */
+            max-width: 900px; /* New max-width for the whole container */
             box-shadow: 8px 8px 0 var(--border-color);
         }
 
@@ -100,6 +100,18 @@
             font-family: "JetBrains Mono", monospace;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+        }
+        
+        /* New layout for board and controls */
+        .game-layout {
+            display: flex;
+            gap: 20px;
+        }
+
+        .game-board {
+            flex-grow: 1; /* Board takes up available space */
+            max-width: 500px; /* Keep board size constrained */
+            width: 100%;
         }
 
         .grid {
@@ -189,11 +201,13 @@
             font-family: "JetBrains Mono", monospace;
         }
 
+        /* New styles for right-aligned controls */
         .controls {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            display: flex; /* Change to flex for vertical layout */
+            flex-direction: column;
             gap: 10px;
-            margin-bottom: 16px;
+            width: 180px; /* Fixed width for control panel */
+            margin-bottom: 0; /* Remove bottom margin */
         }
 
         button {
@@ -207,6 +221,7 @@
             cursor: pointer;
             transition: all 0.2s;
             font-family: "JetBrains Mono", monospace;
+            text-align: center; /* Ensure button text is centered */
         }
 
         button:hover {
@@ -279,24 +294,78 @@
 
         .game-stats {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column; /* Changed to column for vertical list */
+            align-items: flex-start;
             padding-top: 12px;
             border-top: 1px solid var(--border-color);
             font-size: 11px;
             color: var(--text-secondary);
             font-family: "JetBrains Mono", monospace;
+            gap: 4px; /* Space between stats lines */
+        }
+        
+        /* Ensure the stats are displayed correctly below the board on small screens */
+        .game-board .game-stats {
+             display: none; /* Hide for now, we will move it down on small screens */
+        }
+        
+        /* Re-position the selected word display to be part of the controls */
+        .selected-word-display-area {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: "JetBrains Mono", monospace;
+        }
+        
+        .selected-word-display-area span {
+            font-weight: 700;
+            color: var(--accent);
         }
 
-        .hint-count {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
 
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             .game-container {
-                padding: 16px;
+                max-width: 500px;
+                width: 100%;
+            }
+            
+            .game-layout {
+                flex-direction: column; /* Stack elements on smaller screens */
+            }
+
+            .game-board {
+                max-width: 100%;
+            }
+            
+            .controls {
+                width: 100%;
+                display: grid; /* Go back to grid layout for buttons on mobile */
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin-bottom: 16px;
+            }
+
+            .game-board .game-stats {
+                display: flex; /* Show the stats area on small screens */
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding-top: 0;
+            }
+            
+            .game-stats {
+                display: none; /* Hide the stats in the controls column on mobile */
+            }
+
+            .selected-word-display-area {
+                order: -1; /* Place this at the top of the mobile controls grid */
+                grid-column: 1 / -1;
+                margin-bottom: 0;
             }
 
             h1 {
@@ -315,10 +384,6 @@
             button {
                 padding: 8px 12px;
                 font-size: 12px;
-            }
-
-            .controls {
-                grid-template-columns: 1fr;
             }
         }
 
@@ -355,26 +420,41 @@
         </div>
 
         <div id="message" class="message" style="display: none;"></div>
+        
+        <div class="game-layout">
+            <div class="game-board">
+                <div class="found-words">
+                    <h3>Found Words</h3>
+                    <div class="words-list" id="wordsList"></div>
+                </div>
 
-        <div class="found-words">
-            <h3>Found Words</h3>
-            <div class="words-list" id="wordsList"></div>
-        </div>
+                <div class="grid" id="grid"></div>
+                
+                <div class="game-stats">
+                    <div class="selected-word" id="mobileSelectedWordDisplay">Selected: <span id="mobileSelectedWord">-</span></div>
+                    <div class="hint-count">
+                        <span>Hints:</span>
+                        <span id="mobileRemainingHints">3</span>/<span>3</span>
+                    </div>
+                </div>
+            </div>
 
-        <div class="grid" id="grid"></div>
+            <div class="controls">
+                <div class="selected-word-display-area" id="selectedWordDisplayArea">
+                    Selected: <span id="selectedWord">-</span>
+                </div>
+                
+                <button onclick="game.submitWord()" class="primary">Submit Word</button>
+                <button onclick="game.deselectAll()" class="clear-btn">Clear Selection</button>
+                <button onclick="game.hint()" class="hint-btn">💡 Hint (<span id="hintCount">3</span>)</button>
+                <button onclick="game.newGame()" class="new-game-btn">New Game</button>
 
-        <div class="controls">
-            <button onclick="game.hint()" class="hint-btn">💡 Hint (<span id="hintCount">3</span>)</button>
-            <button onclick="game.deselectAll()" class="clear-btn">Clear Selection</button>
-            <button onclick="game.submitWord()" class="primary">Submit Word</button>
-            <button onclick="game.newGame()" class="new-game-btn">New Game</button>
-        </div>
-
-        <div class="game-stats">
-            <div class="selected-word" id="selectedWordDisplay">Selected: <span id="selectedWord">-</span></div>
-            <div class="hint-count">
-                <span>Hints:</span>
-                <span id="remainingHints">3</span>/<span>3</span>
+                <div class="game-stats">
+                    <div class="hint-count">
+                        <span>Hints:</span>
+                        <span id="remainingHints">3</span>/<span>3</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -838,14 +918,17 @@
                 const diffLevel = difficulty < 33 ? 'Hard' : difficulty < 66 ? 'Medium' : 'Easy';
                 document.getElementById('difficulty').textContent = diffLevel;
                 
-                // Update hint count
-                document.getElementById('hintCount').textContent = this.maxHints - this.hintsUsed;
-                document.getElementById('remainingHints').textContent = this.maxHints - this.hintsUsed;
+                // Update hint count for desktop and mobile areas
+                const remaining = this.maxHints - this.hintsUsed;
+                document.getElementById('hintCount').textContent = remaining;
+                document.getElementById('remainingHints').textContent = remaining;
+                document.getElementById('mobileRemainingHints').textContent = remaining;
             }
 
             updateSelectedWordDisplay() {
                 const selectedWord = this.getSelectedWord();
                 document.getElementById('selectedWord').textContent = selectedWord || '-';
+                document.getElementById('mobileSelectedWord').textContent = selectedWord || '-';
             }
         }
 
