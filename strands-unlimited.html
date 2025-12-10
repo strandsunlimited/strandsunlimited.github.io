@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strands Unlimited</title>
+    <title>Strands Unlimited Game</title>
     <style>
         * {
             margin: 0;
@@ -12,36 +12,70 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary, #ffffff);
+            color: var(--text-primary, #0a0a0a);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            max-width: 600px;
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e5e5e5;
+            --text-primary: #0a0a0a;
+            --text-secondary: #525252;
+            --border-color: #0a0a0a;
+            --highlight: #22c55e;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+            --accent: #667eea;
+        }
+
+        body[data-theme="dark"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #171717;
+            --bg-tertiary: #262626;
+            --text-primary: #fafafa;
+            --text-secondary: #a3a3a3;
+            --border-color: #fafafa;
+            --highlight: #4ade80;
+            --success: #22c55e;
+            --success-bg: #14532d;
+            --accent: #667eea;
+        }
+
+        .game-container {
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 500px;
             width: 100%;
+            box-shadow: 8px 8px 0 var(--border-color);
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 24px;
+            font-family: "JetBrains Mono", monospace;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
         }
 
         .theme {
             text-align: center;
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 13px;
+            font-family: "JetBrains Mono", monospace;
         }
 
         .info-bar {
@@ -49,29 +83,33 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding: 10px 0;
-            border-bottom: 2px solid #eee;
+            padding: 12px 0;
+            border-bottom: 2px solid var(--border-color);
         }
 
         .score {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            color: #667eea;
+            color: var(--accent);
+            font-family: "JetBrains Mono", monospace;
         }
 
         .difficulty {
-            font-size: 12px;
-            color: #999;
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: "JetBrains Mono", monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
-            margin-bottom: 30px;
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 8px;
+            gap: 6px;
+            margin-bottom: 24px;
+            background: var(--bg-tertiary);
+            padding: 12px;
+            border-radius: 6px;
         }
 
         .letter {
@@ -79,33 +117,35 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 20px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             user-select: none;
+            font-family: "JetBrains Mono", monospace;
+            color: var(--text-primary);
         }
 
         .letter:hover {
-            background: #f0f0f0;
-            border-color: #667eea;
+            background: var(--bg-tertiary);
+            border-color: var(--accent);
             transform: scale(1.05);
         }
 
         .letter.selected {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
 
         .letter.found {
-            background: #10b981;
-            color: white;
-            border-color: #10b981;
+            background: var(--success);
+            color: var(--bg-primary);
+            border-color: var(--success);
             cursor: default;
             pointer-events: none;
         }
@@ -115,126 +155,202 @@
         }
 
         .found-words {
-            background: #f0fdf4;
-            padding: 15px;
-            border-radius: 8px;
+            background: var(--success-bg);
+            padding: 12px;
+            border-radius: 6px;
             margin-bottom: 20px;
-            min-height: 60px;
+            border: 2px solid var(--success);
+            min-height: 54px;
         }
 
         .found-words h3 {
-            color: #10b981;
-            font-size: 12px;
+            color: var(--success);
+            font-size: 11px;
             margin-bottom: 8px;
             text-transform: uppercase;
+            font-family: "JetBrains Mono", monospace;
+            font-weight: 600;
+            letter-spacing: 0.05em;
         }
 
         .words-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .word-tag {
-            background: #10b981;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+            background: var(--success);
+            color: var(--bg-primary);
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 12px;
             font-weight: 600;
+            font-family: "JetBrains Mono", monospace;
         }
 
         .controls {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         button {
-            flex: 1;
-            padding: 12px 20px;
-            border: 2px solid #ddd;
-            background: white;
-            color: #333;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 10px 16px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: "JetBrains Mono", monospace;
         }
 
         button:hover {
-            border-color: #667eea;
-            color: #667eea;
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translate(-2px, -2px);
+            box-shadow: 2px 2px 0 var(--border-color);
         }
 
         button.primary {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--border-color);
         }
 
         button.primary:hover {
-            background: #5568d3;
-            border-color: #5568d3;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
         }
 
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
         .message {
             text-align: center;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 13px;
             font-weight: 600;
+            border: 2px solid;
+            display: none;
+            font-family: "JetBrains Mono", monospace;
         }
 
         .message.success {
-            background: #d1fae5;
-            color: #065f46;
+            background: var(--success-bg);
+            color: var(--success);
+            border-color: var(--success);
         }
 
         .message.error {
             background: #fee2e2;
             color: #7f1d1d;
+            border-color: #fecaca;
+        }
+
+        body[data-theme="dark"] .message.error {
+            background: #450a0a;
+            color: #fecaca;
+            border-color: #7f1d1d;
         }
 
         .message.info {
             background: #dbeafe;
             color: #1e40af;
+            border-color: #bfdbfe;
+        }
+
+        body[data-theme="dark"] .message.info {
+            background: #1e3a8a;
+            color: #bfdbfe;
+            border-color: #1e40af;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .hint-count {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 20px;
+            .game-container {
+                padding: 16px;
             }
 
             h1 {
-                font-size: 24px;
+                font-size: 20px;
             }
 
             .letter {
-                font-size: 18px;
+                font-size: 16px;
             }
 
             .grid {
-                gap: 6px;
+                gap: 4px;
                 padding: 10px;
+            }
+
+            button {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-height: 700px) {
+            body {
+                padding: 5px;
+            }
+            
+            .game-container {
+                padding: 12px;
+            }
+            
+            .grid {
+                gap: 4px;
+                padding: 8px;
+                margin-bottom: 16px;
+            }
+            
+            .found-words {
+                margin-bottom: 12px;
+                padding: 8px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="game-container">
         <h1>STRANDS</h1>
-        <p class="theme">Find all the related words</p>
+        <p class="theme" id="currentTheme">Find all the related words</p>
 
         <div class="info-bar">
-            <div class="score">Words Found: <span id="found">0</span>/<span id="total">0</span></div>
+            <div class="score">Words: <span id="found">0</span>/<span id="total">0</span></div>
             <div class="difficulty" id="difficulty">Easy</div>
         </div>
 
@@ -248,126 +364,308 @@
         <div class="grid" id="grid"></div>
 
         <div class="controls">
-            <button onclick="game.hint()">💡 Hint</button>
-            <button onclick="game.deselectAll()">Clear</button>
-            <button onclick="game.submitWord()" class="primary">Submit</button>
-            <button onclick="game.newGame()">New Game</button>
+            <button onclick="game.hint()" class="hint-btn">💡 Hint (<span id="hintCount">3</span>)</button>
+            <button onclick="game.deselectAll()" class="clear-btn">Clear Selection</button>
+            <button onclick="game.submitWord()" class="primary">Submit Word</button>
+            <button onclick="game.newGame()" class="new-game-btn">New Game</button>
+        </div>
+
+        <div class="game-stats">
+            <div class="selected-word" id="selectedWordDisplay">Selected: <span id="selectedWord">-</span></div>
+            <div class="hint-count">
+                <span>Hints:</span>
+                <span id="remainingHints">3</span>/<span>3</span>
+            </div>
         </div>
     </div>
 
     <script>
+        // Simplified word list for the iframe version
         const WORDS_LIST = [
-            'APPLE', 'APPLES', 'ABOUT', 'ABOVE', 'ACCEPT', 'ACCESS', 'ACCOUNT', 'ACROSS', 'ACTION', 'ACTIVE', 'ACTOR', 'ACTUAL',
-            'ALMOST', 'ALREADY', 'ALTHOUGH', 'ALWAYS', 'AMAZING', 'AMONG', 'AMOUNT', 'ANCIENT', 'ANIMAL', 'ANOTHER', 'ANSWER', 'ANYONE',
-            'ANYTHING', 'ANYWAY', 'ANYWHERE', 'APART', 'APPARENT', 'APPEAR', 'APPEARANCE', 'APPLE', 'APPLY', 'APPROACH', 'APPROPRIATE', 'APPROVE',
-            'ARGUMENT', 'ARMY', 'AROUND', 'ARRANGE', 'ARRANGEMENT', 'ARREST', 'ARRIVAL', 'ARRIVE', 'ARROW', 'ART', 'ARTIST', 'ARTISTIC',
-            'ASPECT', 'ASSIGNMENT', 'ASSIST', 'ASSISTANCE', 'ASSISTANT', 'ASSUME', 'ASSUMPTION', 'ATMOSPHERE', 'ATTACK', 'ATTEMPT', 'ATTEND', 'ATTENDANCE',
-            'ATTENTION', 'ATTITUDE', 'ATTORNEY', 'ATTRACT', 'ATTRACTION', 'ATTRACTIVE', 'AUDIENCE', 'AUTHORITY', 'AVAILABLE', 'AVENUE', 'AVERAGE', 'AWARD',
-            'AWARE', 'AWARENESS', 'AWAY', 'AWESOME', 'AWFUL', 'BABY', 'BACK', 'BACKGROUND', 'BACKWARD', 'BACON', 'BADGE', 'BAGGAGE',
-            'BALANCE', 'BALANCED', 'BALL', 'BANANA', 'BAND', 'BANK', 'BANNER', 'BARE', 'BARELY', 'BARGAIN', 'BARN', 'BASE',
-            'BASIC', 'BASICALLY', 'BASKET', 'BASKETBALL', 'BATHROOM', 'BATTERY', 'BATTLE', 'BEACH', 'BEAN', 'BEARD', 'BEAST', 'BEAT',
-            'BEAUTIFUL', 'BEAUTY', 'BECAME', 'BECAUSE', 'BECOME', 'BECOMING', 'BEEF', 'BEEN', 'BEER', 'BEFORE', 'BEGAN', 'BEGIN',
-            'BEGINNING', 'BEHAVIOR', 'BEHIND', 'BELIEF', 'BELIEVE', 'BELL', 'BELOW', 'BELT', 'BENCH', 'BENEFIT', 'BENT', 'BERRY',
-            'BESIDE', 'BESIDES', 'BEST', 'BETTER', 'BETWEEN', 'BEYOND', 'BICYCLE', 'BID', 'BIKE', 'BILL', 'BILLION', 'BIND',
-            'BIOLOGY', 'BIRD', 'BIRTH', 'BIRTHDAY', 'BIT', 'BITE', 'BITTER', 'BLACK', 'BLADE', 'BLAME', 'BLANK', 'BLANKET',
-            'BLAST', 'BLEAK', 'BLEED', 'BLEND', 'BLESSED', 'BLIND', 'BLINK', 'BLOCK', 'BLONDE', 'BLOOD', 'BLOW', 'BLUE',
-            'BOARD', 'BOAT', 'BODY', 'BOIL', 'BOLD', 'BOLT', 'BOMB', 'BOND', 'BONE', 'BONUS', 'BOOK', 'BOOKING',
-            'BOOM', 'BOOST', 'BORDER', 'BORE', 'BORN', 'BORROW', 'BOSS', 'BOTH', 'BOTHER', 'BOTTLE', 'BOTTOM', 'BOUNCE',
-            'BOUND', 'BOWL', 'BOX', 'BOXING', 'BOY', 'BOYFRIEND', 'BRAKE', 'BRANCH', 'BRAND', 'BRASS', 'BRAVE', 'BREAD',
-            'BREAK', 'BREAKDOWN', 'BREAKFAST', 'BREAST', 'BREATH', 'BREATHE', 'BRICK', 'BRIDGE', 'BRIEF', 'BRIGHT', 'BRING', 'BROAD',
-            'BROADCAST', 'BROKE', 'BROKEN', 'BRONZE', 'BROTHER', 'BROUGHT', 'BROWN', 'BROWSE', 'BRUSH', 'BUBBLE', 'BUDGET', 'BUILD',
-            'BUILDING', 'BUILT', 'BULK', 'BULLET', 'BUNCH', 'BUNDLE', 'BURDEN', 'BURGER', 'BURIAL', 'BURN', 'BURNING', 'BURST',
-            'BURY', 'BUSH', 'BUSINESS', 'BUSY', 'BUTTON', 'BUYER', 'BUZZ', 'CABLE', 'CAKE', 'CALCIUM', 'CALCULATE', 'CALCULATION',
-            'CALENDAR', 'CALL', 'CALM', 'CAME', 'CAMERA', 'CAMP', 'CAMPAIGN', 'CAN', 'CANADIAN', 'CANAL', 'CANCEL', 'CANDIDATE',
-            'CANDLE', 'CANNON', 'CANNOT', 'CANVAS', 'CAPABLE', 'CAPACITY', 'CAPITAL', 'CAPTAIN', 'CAR', 'CARBON', 'CARD', 'CARE',
-            'CAREER', 'CAREFUL', 'CAREFULLY', 'CARGO', 'CARPET', 'CARRIAGE', 'CARRIED', 'CARRIER', 'CARRY', 'CART', 'CARTOON', 'CARVE',
-            'CASE', 'CASH', 'CASINO', 'CASTLE', 'CASUAL', 'CAT', 'CATALOG', 'CATCH', 'CATEGORY', 'CATTLE', 'CAUGHT', 'CAUSE',
-            'CAUSED', 'CAUTION', 'CAVE', 'CELEBRATE', 'CELEBRITY', 'CELL', 'CELLAR', 'CEMENT', 'CEMETERY', 'CENSUS', 'CENT', 'CENTER',
-            'CENTRAL', 'CENTURY', 'CERAMIC', 'CEREMONY', 'CERTAIN', 'CERTAINLY', 'CERTAINTY', 'CERTIFICATE', 'CHAIN', 'CHAIR', 'CHALLENGE', 'CHAMBER',
-            'CHANCE', 'CHANGE', 'CHANNEL', 'CHAOS', 'CHAPTER', 'CHARGE', 'CHARITY', 'CHARM', 'CHART', 'CHASE', 'CHAT', 'CHEAP',
-            'CHEAT', 'CHECK', 'CHEESE', 'CHEMICAL', 'CHEMISTRY', 'CHEQUE', 'CHERRY', 'CHESS', 'CHEST', 'CHICKEN', 'CHIEF', 'CHILD',
-            'CHILDHOOD', 'CHILL', 'CHIMNEY', 'CHINA', 'CHINESE', 'CHIP', 'CHOICE', 'CHOCOLATE', 'CHOICE', 'CHOOSE', 'CHOP', 'CHOSEN',
-            'CHRISTMAS', 'CHROME', 'CHUNK', 'CHURCH', 'CIGARETTE', 'CINEMA', 'CIRCLE', 'CIRCUIT', 'CIRCULAR', 'CIRCULATION', 'CIRCUMSTANCE', 'CITIZEN',
-            'CITIZENSHIP', 'CITY', 'CIVIL', 'CIVILIAN', 'CLAIM', 'CLAP', 'CLARIFY', 'CLARITY', 'CLASS', 'CLASSIC', 'CLASSICAL', 'CLASSIFICATION',
-            'CLASSIFY', 'CLASSROOM', 'CLAUSE', 'CLAW', 'CLAY', 'CLEAN', 'CLEANUP', 'CLEAR', 'CLEARANCE', 'CLEARING', 'CLEARLY', 'CLERK',
-            'CLEVER', 'CLICK', 'CLIENT', 'CLIFF', 'CLIMATE', 'CLIMB', 'CLIMBING', 'CLINIC', 'CLINICAL', 'CLIP', 'CLOCK', 'CLOSE',
-            'CLOSELY', 'CLOSET', 'CLOSING', 'CLOTH', 'CLOTHES', 'CLOTHING', 'CLOUD', 'CLOUDY', 'CLUB', 'CLUE', 'CLUSTER', 'CLUTCH',
-            'COACH', 'COAL', 'COALITION', 'COAST', 'COASTAL', 'COAT', 'COATING', 'COCAINE', 'COCK', 'COCKTAIL', 'COCOA', 'COCONUT',
-            'CODE', 'COFFEE', 'COFFIN', 'COIN', 'COKE', 'COLD', 'COLLAPSE', 'COLLAR', 'COLLECTION', 'COLLECTIVE', 'COLLECTOR', 'COLLEGE',
-            'COLLISION', 'COLONIAL', 'COLONY', 'COLOR', 'COLORADO', 'COLORED', 'COLORFUL', 'COLUMN', 'COMBINATION', 'COMBINE', 'COMEBACK', 'COMEDY',
-            'COMFORT', 'COMFORTABLE', 'COMIC', 'COMING', 'COMMA', 'COMMAND', 'COMMANDER', 'COMMANDING', 'COMMENT', 'COMMERCE', 'COMMERCIAL', 'COMMISSION',
-            'COMMISSIONER', 'COMMIT', 'COMMITMENT', 'COMMITTEE', 'COMMODITY', 'COMMON', 'COMMONLY', 'COMMONWEALTH', 'COMMUNICATION', 'COMMUNICATIONS', 'COMMUNISM', 'COMMUNIST',
-            'COMMUNITY', 'COMPACT', 'COMPANION', 'COMPANY', 'COMPARABLE', 'COMPARATIVE', 'COMPARE', 'COMPARISON', 'COMPARTMENT', 'COMPASS', 'COMPASSION', 'COMPATIBLE',
-            'COMPENSATION', 'COMPETE', 'COMPETENCE', 'COMPETENT', 'COMPETITION', 'COMPETITIVE', 'COMPETITOR', 'COMPILE', 'COMPLAIN', 'COMPLAINT', 'COMPLEMENT', 'COMPLETE',
-            'COMPLETELY', 'COMPLETION', 'COMPLEX', 'COMPLEXITY', 'COMPLIANCE', 'COMPLICATE', 'COMPLICATED', 'COMPLICATION', 'COMPLIMENT', 'COMPLY', 'COMPONENT', 'COMPOSE',
-            'COMPOSED', 'COMPOSER', 'COMPOSITE', 'COMPOSITION', 'COMPOUND', 'COMPREHENSIVE', 'COMPRESS', 'COMPRISE', 'COMPROMISE', 'COMPTROLLER', 'COMPULSION', 'COMPUTATION',
-            'COMPUTE', 'COMPUTER', 'COMPUTING', 'COMRADE', 'CONCEAL', 'CONCEDE', 'CONCEIT', 'CONCEIVABLE', 'CONCEIVE', 'CONCENTRATE', 'CONCENTRATION', 'CONCENTRIC',
-            'CONCEPT', 'CONCEPTION', 'CONCERN', 'CONCERNED', 'CONCERT', 'CONCESSION', 'CONCH', 'CONCLUDE', 'CONCLUSION', 'CONCRETE', 'CONCUR', 'CONCURRENT',
-            'CONCUSSION', 'CONDEMN', 'CONDEMNATION', 'CONDENSATION', 'CONDENSE', 'CONDESCEND', 'CONDESCENDING', 'CONDITION', 'CONDITIONAL', 'CONDITIONING', 'CONDO', 'CONDOLENCE',
-            'CONDOMINIUM', 'CONDUCIVE', 'CONDUCT', 'CONDUCTIVITY', 'CONDUCTOR', 'CONDUIT', 'CONE', 'CONFECTION', 'CONFECTIONER', 'CONFEDERACY', 'CONFEDERATE', 'CONFEDERATION',
-            'CONFER', 'CONFERENCE', 'CONFERRAL', 'CONFESS', 'CONFESSION', 'CONFESSOR', 'CONFETTI', 'CONFIDENT', 'CONFIDENTIAL', 'CONFIDENTIALITY', 'CONFIDING', 'CONFIGURATION',
-            'CONFIGURE', 'CONFINE', 'CONFINED', 'CONFINEMENT', 'CONFIRM', 'CONFIRMATION', 'CONFIRMED', 'CONFISCATE', 'CONFISCATION', 'CONFLAGRATION', 'CONFLICT', 'CONFLUENCE',
-            'CONFORM', 'CONFORMABLE', 'CONFORMABLY', 'CONFORMANCE', 'CONFORMATION', 'CONFORMITY', 'CONFOUND', 'CONFRONT', 'CONFRONTATION', 'CONFUSE', 'CONFUSED', 'CONFUSING',
-            'CONFUSION', 'CONFUTE', 'CONGEAL', 'CONGENIAL', 'CONGENITAL', 'CONGESTION', 'CONGLOMERATE', 'CONGLOMERATION', 'CONGO', 'CONGRATULATE', 'CONGRATULATION', 'CONGRATULATORY',
-            'CONGREGATE', 'CONGREGATION', 'CONGRESS', 'CONGRESSIONAL', 'CONGRESSMAN', 'CONGRESSWOMAN', 'CONGRUENCE', 'CONGRUENT', 'CONGRUITY', 'CONGRUOUS', 'CONIC', 'CONICAL',
-            'CONIFER', 'CONIFEROUS', 'CONJECTURE', 'CONJOIN', 'CONJOINED', 'CONJOINTLY', 'CONJUGAL', 'CONJUGATE', 'CONJUGATION', 'CONJUNCTION', 'CONJUNCTIVA', 'CONJUNCTIVE',
-            'CONJUNCTURE', 'CONJURATION', 'CONJURE', 'CONJURER', 'CONJUROR', 'CONK', 'CONNECT', 'CONNECTED', 'CONNECTICUT', 'CONNECTING', 'CONNECTION', 'CONNECTOR',
-            'CONNIVANCE', 'CONNIVE', 'CONNOISSEUR', 'CONNOTATION', 'CONNOTE', 'CONNUBIAL', 'CONQUER', 'CONQUEROR', 'CONQUEST', 'CONQUISTADOR', 'CONSANGUINITY', 'CONSCIENCE',
-            'CONSCIENTIOUS', 'CONSCIOUS', 'CONSCIOUSNESS', 'CONSCRIPT', 'CONSCRIPTION', 'CONSECRATE', 'CONSECRATION', 'CONSECUTIVE', 'CONSECUTIVELY', 'CONSENSUS', 'CONSENT', 'CONSEQUENCE',
-            'CONSEQUENT', 'CONSEQUENTIAL', 'CONSEQUENTLY', 'CONSERVATION', 'CONSERVATISM', 'CONSERVATIVE', 'CONSERVATOR', 'CONSERVATORY', 'CONSERVE', 'CONSIDER', 'CONSIDERABLE',
-            'CONSIDERABLY', 'CONSIDERATE', 'CONSIDERATELY', 'CONSIDERATENESS', 'CONSIDERATION', 'CONSIDERING', 'CONSIGN', 'CONSIGNEE', 'CONSIGNMENT', 'CONSIGNOR', 'CONSIST', 'CONSISTENCE',
-            'CONSISTENCY', 'CONSISTENT', 'CONSISTENTLY', 'CONSOLATION', 'CONSOLE', 'CONSOLIDATE', 'CONSOLIDATION', 'CONSOLS', 'CONSONANCE', 'CONSONANT', 'CONSORT', 'CONSORTIUM',
-            'CONSPICUOUS', 'CONSPICUOUSLY', 'CONSPICUOUSNESS', 'CONSPIRACY', 'CONSPIRATOR', 'CONSPIRATORIAL', 'CONSPIRE', 'CONSTABLE', 'CONSTABULARY', 'CONSTANCE', 'CONSTANCY', 'CONSTANT',
-            'CONSTANTLY', 'CONSTANTINE', 'CONSTELLATION', 'CONSTERNATION', 'CONSTIPATED', 'CONSTIPATION', 'CONSTITUENCY', 'CONSTITUENT', 'CONSTITUTE', 'CONSTITUTION', 'CONSTITUTIONAL',
-            'CONSTITUTIONALITY', 'CONSTITUTIONALLY', 'CONSTITUTIVE', 'CONSTRAIN', 'CONSTRAINED', 'CONSTRAINT', 'CONSTRICT', 'CONSTRICTED', 'CONSTRICTION', 'CONSTRICTIVE', 'CONSTRICTOR',
-            'CONSTRUCT', 'CONSTRUCTION', 'CONSTRUCTIVE', 'CONSTRUCTIVELY', 'CONSTRUCTOR', 'CONSTRUE', 'CONSUL', 'CONSULAR', 'CONSULATE', 'CONSULT', 'CONSULTANCY', 'CONSULTANT',
-            'CONSULTATION', 'CONSULTATIVE', 'CONSUME', 'CONSUMER', 'CONSUMERISM', 'CONSUMING', 'CONSUMMATE', 'CONSUMMATELY', 'CONSUMMATION', 'CONSUMPTION', 'CONSUMPTIVE', 'CONTACT',
-            'CONTAGION', 'CONTAGIOUS', 'CONTAGIOUSNESS', 'CONTAIN', 'CONTAINED', 'CONTAINER', 'CONTAINMENT', 'CONTAMINATE', 'CONTAMINATION', 'CONTEMN', 'CONTEMPLATE', 'CONTEMPLATION',
-            'CONTEMPLATIVE', 'CONTEMPORANEOUS', 'CONTEMPORANEOUSLY', 'CONTEMPORANEOUSNESS', 'CONTEMPORARY', 'CONTEMPT', 'CONTEMPTIBLE', 'CONTEMPTUOUS', 'CONTEMPTUOUSLY', 'CONTEMPTUOUSNESS', 'CONTEND', 'CONTENDER',
-            'CONTENDING', 'CONTENT', 'CONTENTED', 'CONTENTEDLY', 'CONTENTEDNESS', 'CONTENTION', 'CONTENTIOUS', 'CONTENTIOUSLY', 'CONTENTIOUSNESS', 'CONTENTMENT', 'CONTENTS', 'CONTEST',
-            'CONTESTANT', 'CONTEXT', 'CONTEXTUAL', 'CONTEXTUALLY', 'CONTIGUITY', 'CONTIGUOUS', 'CONTIGUOUSLY', 'CONTIGUOUSNESS', 'CONTINENCE', 'CONTINENT', 'CONTINENTAL', 'CONTINGENCE',
-            'CONTINGENCY', 'CONTINGENT', 'CONTINGENTLY', 'CONTINUAL', 'CONTINUALLY', 'CONTINUANCE', 'CONTINUATION', 'CONTINUE', 'CONTINUED', 'CONTINUEDLY', 'CONTINUITY', 'CONTINUOUS',
-            'CONTINUOUSLY', 'CONTINUOUSNESS', 'CONTINUUM', 'CONTORT', 'CONTORTION', 'CONTORTIONIST', 'CONTORTIONISTIC', 'CONTOUR', 'CONTRABAND', 'CONTRACEPTION', 'CONTRACEPTIVE', 'CONTRACT',
-            'CONTRACTIBILITY', 'CONTRACTIBLE', 'CONTRACTED', 'CONTRACTIBILITY', 'CONTRACTING', 'CONTRACTILE', 'CONTRACTILITY', 'CONTRACTION', 'CONTRACTOR', 'CONTRACTUAL', 'CONTRACTUALLY', 'CONTRADICT',
-            'CONTRADICTION', 'CONTRADICTORY', 'CONTRADICTORILY', 'CONTRAINDICATE', 'CONTRAINDICATION', 'CONTRAIL', 'CONTRAINDICATION', 'CONTRAPOSE', 'CONTRAPOSITION', 'CONTRAPTION', 'CONTRAPUNTAL',
-            'CONTRAPUNTIST', 'CONTRAPUNTIST', 'CONTRARIETY', 'CONTRARILY', 'CONTRARINESS', 'CONTRARIWISE', 'CONTRARY', 'CONTRAST', 'CONTRASTABLE', 'CONTRASTABLE', 'CONTRASTING', 'CONTRASTINGLY',
-            'CONTRASTIVE', 'CONTRASTIVELY', 'CONTRAVENE', 'CONTRAVENER', 'CONTRAVENTION', 'CONTRIBUT', 'CONTRIBUTE', 'CONTRIBUTION', 'CONTRIBUTOR', 'CONTRIBUTORY', 'CONTRITE', 'CONTRITELY',
-            'CONTRITENESS', 'CONTRITION', 'CONTRIVANCE', 'CONTRIVE', 'CONTRIVED', 'CONTROL', 'CONTROLLABLE', 'CONTROLLER', 'CONTROLLING', 'CONTROVERSIAL', 'CONTROVERSIALLY', 'CONTROVERSIALIST',
-            'CONTROVERSY', 'CONTROVERT', 'CONTROVERTIBLE', 'CONTROVERTIBLY', 'CONTUBERNALIS', 'CONTUBERNY', 'CONTUMACIOUS', 'CONTUMACIOUSLY', 'CONTUMACY', 'CONTUMELIOUS', 'CONTUMELIOUSLY',
-            'CONTUMELIOUSNESS', 'CONTUMELY', 'CONTUSE', 'CONTUSION', 'CONUNDRUM', 'CONURBATION', 'CONVALESCENCE', 'CONVALESCENT', 'CONVALESCE', 'CONVALESCING', 'CONVECTION', 'CONVECTIONAL',
-            'CONVECTIVE', 'CONVENE', 'CONVENER', 'CONVENIENCE', 'CONVENIENCES', 'CONVENIENT', 'CONVENIENTLY', 'CONVENT', 'CONVENTICLE', 'CONVENTION', 'CONVENTIONAL', 'CONVENTIONALISM',
-            'CONVENTIONALIST', 'CONVENTIONALLY', 'CONVENTIONALIZE', 'CONVENTIONS', 'CONVENTUAL', 'CONVERGE', 'CONVERGENCE', 'CONVERGENT', 'CONVERGENTLY', 'CONVERSABLE', 'CONVERSABLY',
-            'CONVERSANCE', 'CONVERSANCY', 'CONVERSANT', 'CONVERSANTLY', 'CONVERSATION', 'CONVERSATIONAL', 'CONVERSATIONALIST', 'CONVERSATIONALLY', 'CONVERSATIVE', 'CONVERSAZIONE', 'CONVERSE',
-            'CONVERSELY', 'CONVERSES', 'CONVERSING', 'CONVERSION', 'CONVERSIONIST', 'CONVERSIVE', 'CONVERT', 'CONVERTED', 'CONVERTER', 'CONVERTIBILITY', 'CONVERTIBLE', 'CONVERTIBLES',
-            'CONVERTIBLY', 'CONVERTING', 'CONVEX', 'CONVEXITY', 'CONVEXLY', 'CONVEY', 'CONVEYABLE', 'CONVEYANCE', 'CONVEYANCER', 'CONVEYANCING', 'CONVEYER', 'CONVEYING',
-            'CONVEYOR', 'CONVICT', 'CONVICTED', 'CONVICTING', 'CONVICTION', 'CONVICTIVE', 'CONVICTIVELY', 'CONVINCE', 'CONVINCED', 'CONVINCEDLY', 'CONVINCEDNESS', 'CONVINCER', 'CONVINCIBLE',
-            'CONVINCINGLY', 'CONVINCINGNESS', 'CONVIVIAL', 'CONVIVIALITY', 'CONVIVIALLY', 'CONVOCATION', 'CONVOKE', 'CONVOLVED', 'CONVOLUTED', 'CONVOLUTION', 'CONVOLUTIONED', 'CONVOLUTIONIST',
-            'CONVOLVULUS', 'CONVOY', 'CONVULSE', 'CONVULSED', 'CONVULSEDLY', 'CONVULSING', 'CONVULSION', 'CONVULSIONARY', 'CONVULSIONARY', 'CONVULSIONS', 'CONVULSIVE', 'CONVULSIVELY',
-            'CONVULSIVENESS', 'CONVULSORY', 'CONY', 'CONYCATCH', 'CONYDROP', 'COO', 'COOED', 'COOEE', 'COOEEING', 'COOER', 'COOEY', 'COOFUL',
-            'COOIE', 'COOING', 'COOK', 'COOKABLE', 'COOKBOOK', 'COOKED', 'COOKER', 'COOKERY', 'COOKHOUSE', 'COOKIE', 'COOKER', 'COOKERY',
-            'COOKING', 'COOKOUT', 'COOKS', 'COOKSHOP', 'COOKSTOVE', 'COOKWARE', 'COOL', 'COOLED', 'COOLER', 'COOLEST', 'COOLEY', 'COOLIBAH',
-            'COOLIBARS', 'COOLIDGE', 'COOLIES', 'COOLIEING', 'COOLIER', 'COOLIES', 'COOLIFF', 'COOLING', 'COOLINGLY', 'COOLISH', 'COOLNESS', 'COOLTH',
-            'COOLY', 'COOM', 'COOMB', 'COOMBED', 'COOMED', 'COOMERY', 'COOMING', 'COOMS', 'COON', 'COONCAN', 'COONCATS', 'COONCAT',
-            'COONED', 'COONER', 'COONHOUND', 'COONROOT', 'COONS', 'COONSKIN', 'COONSKINS', 'COONTIE', 'COOP', 'COOPER', 'COOPERAGE', 'COOPERAGE',
-            'COOPERAGES', 'COOPERATE', 'COOPERATED', 'COOPERATES', 'COOPERATING', 'COOPERATION', 'COOPERATIVE', 'COOPERATIVELY', 'COOPERATIVENESS', 'COOPERATOR', 'COOPERATORS', 'COOPERED', 'COOPERING',
-            'COPSE', 'COPTER', 'COPULA', 'COPULAR', 'COPULATE', 'COPULATION', 'COPULATIVE', 'COPULATIVELY', 'COPY', 'COPYABLE', 'COPYBOOK', 'COPYBOOKS',
-            'COPYCAT', 'COPYCATS', 'COPIED', 'COPIER', 'COPIERS', 'COPIES', 'COPYEDIT', 'COPYEDITOR', 'COPYHOLD', 'COPYHOLDER', 'COPYHOLDERS', 'COPYISM',
-            'COPYIST', 'COPYISTS', 'COPYRIGHT', 'COPYRIGHTED', 'COPYRIGHTING', 'COPYRIGHTS', 'COQUE', 'COQUELICOT', 'COQUET', 'COQUETRY', 'COQUETS', 'COQUETTE',
-            'COQUETTED', 'COQUETTES', 'COQUETTING', 'COQUETTISH', 'COQUETTISHLY', 'COQUETTISHNESS', 'COQUILLE', 'COQUILLES', 'COQUINA', 'COQUINAS', 'COQUITO', 'COQUITOS',
-            'CORACLE', 'CORACLES', 'CORACOID', 'CORACOIDS', 'CORAL', 'CORALBERRY', 'CORALBELLS', 'CORALED', 'CORALLINE', 'CORALLINEITY', 'CORALLINES', 'CORALLITIES',
-            'CORALLITE', 'CORALLITES', 'CORALLOID', 'CORALLIKE', 'CORALLINE', 'CORALLINS', 'CORALLITE', 'CORALLY', 'CORALLUM', 'CORALS', 'CORALWORT',
-            'CORAM', 'CORAMINE', 'CORAMINES', 'CORAMIS', 'CORAMITE', 'CORAMITES', 'CORAMU', 'CORAMUSED', 'CORAMUSING', 'CORAN', 'CORANCE', 'CORANDEL',
-            'CORANTO', 'CORANTOES', 'CORANTOS', 'CORAQUEEN', 'CORAQUEN', 'CORAQUET', 'CORAQUETS', 'CORASHAN', 'CORASHANATE', 'CORASTANE', 'CORASTINE', 'CORASTOP',
-            'CORASTY', 'CORASUCO', 'CORASUCUS', 'CORATA', 'CORATAS', 'CORATELLA', 'CORATELLES', 'CORATING', 'CORATINO', 'CORATIN', 'CORATINO', 'CORATON',
-            'CORATONS', 'CORATRAL', 'CORATRE', 'CORATREM', 'CORATREMS', 'CORATREP', 'CORATREPS', 'CORATRICE', 'CORATRICES', 'CORATRIM', 'CORATRIMS',
-            'CORATRISE', 'CORATRISES', 'CORATU', 'CORATUS', 'CORAUGH', 'CORAVALLA', 'CORAVALLAS', 'CORAVELLE', 'CORAVELLES', 'CORAVELLINA', 'CORAVELLINAS',
-            'CORAVELLINO', 'CORAVELLINOS', 'CORAVELLONS', 'CORAVELLUM', 'CORAVELLUMS', 'CORAVELLUS', 'CORAVELLUSES', 'CORAVE', 'CORAVEL', 'CORAVELS', 'CORAVERA',
-            'CORAVERAS', 'CORAVERIA', 'CORAVERIAS', 'CORAVERIES', 'CORAVERY', 'CORAVESALA', 'CORAVESALAS', 'CORAVESQUE', 'CORAVESQUES', 'CORAVETE', 'CORAVETES'
-        ];
-
-        const THEMES = [
-            'Words with letters', 'Words with double letters', 'Words starting with C', 
-            'Common verbs', 'Nouns', 'Adjectives', 'Animals', 'Actions', 'Objects'
+            'APPLE', 'ABOUT', 'ABOVE', 'ACCEPT', 'ACTION', 'ACTOR', 'ACTUAL', 'ADULT', 'ADVICE', 'AFFAIR',
+            'AFRAID', 'AFTER', 'AGAIN', 'AGAINST', 'AGENCY', 'AGENT', 'AGREE', 'AHEAD', 'AIMED', 'ALBUM',
+            'ALERT', 'ALIEN', 'ALIKE', 'ALIVE', 'ALONE', 'ALONG', 'ALTER', 'AMBER', 'AMONG', 'ANGEL',
+            'ANGER', 'ANGLE', 'ANGRY', 'ANIMAL', 'ANNEX', 'ANNOY', 'ANNUAL', 'ANOTHER', 'ANSWER', 'ANTIC',
+            'ANYONE', 'ANYTHING', 'APART', 'APPLE', 'APPLY', 'APRIL', 'ARBOR', 'ARENA', 'ARGUE', 'ARISE',
+            'ARMED', 'ARMY', 'AROSE', 'ARRAY', 'ARROW', 'ASIDE', 'ASKED', 'ASLEEP', 'ASPECT', 'ASSET',
+            'ASSIGN', 'ASSIST', 'ASSUME', 'ASTER', 'ATLAS', 'ATOM', 'ATTACH', 'ATTACK', 'ATTAIN', 'ATTIC',
+            'AUDIO', 'AUDIT', 'AUGUST', 'AUNT', 'AUTO', 'AVOID', 'AWAIT', 'AWAKE', 'AWARD', 'AWARE',
+            'AWFUL', 'BADGE', 'BADLY', 'BAGEL', 'BAKER', 'BALANCE', 'BALL', 'BANANA', 'BAND', 'BANK',
+            'BARGE', 'BARON', 'BASE', 'BASIC', 'BASIS', 'BATCH', 'BATHE', 'BATTLE', 'BEACH', 'BEADS',
+            'BEAMS', 'BEANS', 'BEAR', 'BEAST', 'BEAT', 'BEAUTY', 'BECAME', 'BECAUSE', 'BECOME', 'BEDROOM',
+            'BEECH', 'BEEF', 'BEEN', 'BEER', 'BEFORE', 'BEGAN', 'BEGIN', 'BEHALF', 'BEHAVE', 'BEHIND',
+            'BEING', 'BELIEF', 'BELL', 'BELOW', 'BELT', 'BENCH', 'BENEFIT', 'BESIDE', 'BEST', 'BETTER',
+            'BEYOND', 'BIAS', 'BIBLE', 'BICYCLE', 'BIDDER', 'BIGGER', 'BIKE', 'BILL', 'BIND', 'BINGO',
+            'BIRCH', 'BIRD', 'BIRTH', 'BITTER', 'BLACK', 'BLADE', 'BLAME', 'BLANK', 'BLAST', 'BLEND',
+            'BLESS', 'BLIND', 'BLINK', 'BLOCK', 'BLOOD', 'BLOW', 'BLUE', 'BOARD', 'BOAT', 'BODY',
+            'BOLD', 'BOLT', 'BOND', 'BONE', 'BONUS', 'BOOK', 'BOOM', 'BOOST', 'BOOT', 'BORDER',
+            'BORED', 'BORN', 'BORROW', 'BOSS', 'BOTH', 'BOTTLE', 'BOTTOM', 'BOUNCE', 'BOUND', 'BOWL',
+            'BOX', 'BOY', 'BRAIN', 'BRAKE', 'BRANCH', 'BRAND', 'BRAVE', 'BREAD', 'BREAK', 'BREATH',
+            'BREED', 'BRIEF', 'BRIGHT', 'BRING', 'BROAD', 'BROKE', 'BROKEN', 'BROTHER', 'BROWN', 'BRUSH',
+            'BUBBLE', 'BUCKET', 'BUDGET', 'BUFFET', 'BUILD', 'BUILT', 'BULB', 'BULK', 'BULL', 'BUNCH',
+            'BUNDLE', 'BURDEN', 'BURN', 'BURST', 'BUS', 'BUSY', 'BUTTON', 'BUY', 'CABIN', 'CABLE',
+            'CACTUS', 'CAGE', 'CAKE', 'CALF', 'CALL', 'CALM', 'CAMEL', 'CAMERA', 'CAMP', 'CAN',
+            'CANAL', 'CANCEL', 'CANDLE', 'CANDY', 'CANE', 'CANON', 'CANOPY', 'CANVAS', 'CAP', 'CAPE',
+            'CAR', 'CARD', 'CARE', 'CARGO', 'CARPET', 'CARRIAGE', 'CARRY', 'CART', 'CASE', 'CASH',
+            'CAST', 'CASTLE', 'CAT', 'CATCH', 'CATTLE', 'CAUSE', 'CAVE', 'CEASE', 'CEILING', 'CELL',
+            'CEMENT', 'CENSUS', 'CENT', 'CENTER', 'CENTRAL', 'CENTURY', 'CERAMIC', 'CERTAIN', 'CHAIN', 'CHAIR',
+            'CHALK', 'CHANCE', 'CHANGE', 'CHAOS', 'CHAPTER', 'CHARGE', 'CHART', 'CHASE', 'CHEAP', 'CHECK',
+            'CHEEK', 'CHEER', 'CHEESE', 'CHEF', 'CHERRY', 'CHEST', 'CHICKEN', 'CHIEF', 'CHILD', 'CHILL',
+            'CHIMNEY', 'CHIN', 'CHINA', 'CHIP', 'CHOICE', 'CHOOSE', 'CHOP', 'CHORD', 'CHOSE', 'CHURCH',
+            'CIGAR', 'CIRCLE', 'CIRCUIT', 'CITY', 'CIVIL', 'CLAIM', 'CLAP', 'CLASH', 'CLASS', 'CLAW',
+            'CLAY', 'CLEAN', 'CLEAR', 'CLERK', 'CLEVER', 'CLICK', 'CLIFF', 'CLIMB', 'CLING', 'CLINIC',
+            'CLIP', 'CLOCK', 'CLOSE', 'CLOTH', 'CLOUD', 'CLUB', 'CLUE', 'CLUMP', 'COACH', 'COAL',
+            'COAST', 'COAT', 'CODE', 'COFFEE', 'COIL', 'COIN', 'COLD', 'COLLAR', 'COLLECT', 'COLONY',
+            'COLOR', 'COLUMN', 'COMB', 'COME', 'COMET', 'COMFORT', 'COMIC', 'COMMA', 'COMMON', 'COMPANY',
+            'COMPARE', 'COMPASS', 'COMPETE', 'COMPILE', 'COMPLAIN', 'COMPLETE', 'COMPLEX', 'COMPOUND', 'COMPUTE', 'CONCEAL',
+            'CONCEPT', 'CONCERN', 'CONCERT', 'CONCLUDE', 'CONCRETE', 'CONDEMN', 'CONDITION', 'CONDUCT', 'CONE', 'CONFER',
+            'CONFESS', 'CONFIDE', 'CONFIRM', 'CONFLICT', 'CONFRONT', 'CONFUSE', 'CONGRATULATE', 'CONNECT', 'CONQUER', 'CONSCIENCE',
+            'CONSCIOUS', 'CONSENT', 'CONSIDER', 'CONSIST', 'CONSOLE', 'CONSTANT', 'CONSTRUCT', 'CONSULT', 'CONSUME', 'CONTACT',
+            'CONTAIN', 'CONTEMPT', 'CONTEND', 'CONTENT', 'CONTEST', 'CONTEXT', 'CONTINENT', 'CONTINUE', 'CONTRACT', 'CONTRARY',
+            'CONTRAST', 'CONTRIBUTE', 'CONTROL', 'CONVENE', 'CONVERSE', 'CONVERT', 'CONVEY', 'CONVICT', 'CONVINCE', 'COOK',
+            'COOL', 'COOPERATE', 'COPE', 'COPY', 'CORD', 'CORE', 'CORK', 'CORN', 'CORNER', 'CORPS',
+            'CORRECT', 'CORRELATE', 'CORRESPOND', 'CORRUPT', 'COST', 'COTTON', 'COUCH', 'COUGH', 'COULD', 'COUNCIL',
+            'COUNSEL', 'COUNT', 'COUNTRY', 'COUNTY', 'COUPLE', 'COURAGE', 'COURSE', 'COURT', 'COUSIN', 'COVER',
+            'COW', 'COWARD', 'COWBOY', 'CRACK', 'CRAFT', 'CRASH', 'CRAWL', 'CRAZY', 'CREAM', 'CREATE',
+            'CREDIT', 'CREEP', 'CREW', 'CRICKET', 'CRIME', 'CRISP', 'CRITIC', 'CROP', 'CROSS', 'CROWD',
+            'CROWN', 'CRUCIAL', 'CRUDE', 'CRUEL', 'CRUISE', 'CRUSH', 'CRUST', 'CRY', 'CRYSTAL', 'CUBE',
+            'CULTURE', 'CUP', 'CURE', 'CURIOUS', 'CURL', 'CURRENCY', 'CURRENT', 'CURTAIN', 'CURVE', 'CUSHION',
+            'CUSTOM', 'CUT', 'CYCLE', 'DAILY', 'DAIRY', 'DAM', 'DAMAGE', 'DAMP', 'DANCE', 'DANGER',
+            'DARE', 'DARK', 'DASH', 'DATA', 'DATE', 'DAUGHTER', 'DAWN', 'DAY', 'DEAD', 'DEAF',
+            'DEAL', 'DEAR', 'DEATH', 'DEBATE', 'DEBT', 'DECADE', 'DECAY', 'DECEIVE', 'DECEMBER', 'DECIDE',
+            'DECIMAL', 'DECISION', 'DECK', 'DECLARE', 'DECLINE', 'DECORATE', 'DECREASE', 'DEDICATE', 'DEED', 'DEEP',
+            'DEER', 'DEFEAT', 'DEFECT', 'DEFEND', 'DEFICIT', 'DEFINE', 'DEFINITE', 'DEGREE', 'DELAY', 'DELETE',
+            'DELICATE', 'DELIGHT', 'DELIVER', 'DEMAND', 'DEMOCRACY', 'DEMONSTRATE', 'DENSE', 'DENY', 'DEPART', 'DEPEND',
+            'DEPOSIT', 'DEPRESS', 'DEPTH', 'DEPUTY', 'DERIVE', 'DESCRIBE', 'DESERT', 'DESERVE', 'DESIGN', 'DESIRE',
+            'DESK', 'DESPAIR', 'DESPITE', 'DESTROY', 'DETAIL', 'DETECT', 'DETERMINE', 'DEVELOP', 'DEVICE', 'DEVIL',
+            'DEVOTE', 'DIAGRAM', 'DIAL', 'DIAMOND', 'DIARY', 'DICTATE', 'DIE', 'DIFFER', 'DIFFICULT', 'DIG',
+            'DIGEST', 'DIGITAL', 'DIGNITY', 'DILUTE', 'DIM', 'DINNER', 'DIP', 'DIRECT', 'DIRT', 'DISABLE',
+            'DISAGREE', 'DISAPPEAR', 'DISASTER', 'DISC', 'DISCHARGE', 'DISCIPLINE', 'DISCOVER', 'DISCUSS', 'DISEASE', 'DISGUST',
+            'DISH', 'DISLIKE', 'DISMISS', 'DISORDER', 'DISPLAY', 'DISPUTE', 'DISTANCE', 'DISTINCT', 'DISTORT', 'DISTRICT',
+            'DISTURB', 'DITCH', 'DIVE', 'DIVIDE', 'DIVINE', 'DIVISION', 'DIVORCE', 'DIZZY', 'DOCTOR', 'DOCUMENT',
+            'DOG', 'DOLL', 'DOLLAR', 'DOMAIN', 'DOMESTIC', 'DOMINANT', 'DONATE', 'DOOR', 'DOSE', 'DOUBLE',
+            'DOUBT', 'DOWN', 'DOZEN', 'DRAFT', 'DRAG', 'DRAMA', 'DRAMATIC', 'DRAW', 'DREAM', 'DRESS',
+            'DRIFT', 'DRILL', 'DRINK', 'DRIP', 'DRIVE', 'DROP', 'DROWN', 'DRUG', 'DRUM', 'DRY',
+            'DUCK', 'DUE', 'DULL', 'DUMB', 'DUMP', 'DURING', 'DUST', 'DUTY', 'DWELL', 'DYING',
+            'EACH', 'EAGER', 'EAGLE', 'EAR', 'EARLY', 'EARN', 'EARTH', 'EASE', 'EAST', 'EASY',
+            'EAT', 'ECHO', 'ECONOMY', 'EDGE', 'EDIT', 'EDITION', 'EDITOR', 'EDUCATE', 'EFFECT', 'EFFORT',
+            'EGG', 'EGO', 'EIGHT', 'EITHER', 'ELBOW', 'ELDER', 'ELECT', 'ELECTRIC', 'ELEMENT', 'ELEPHANT',
+            'ELEVATE', 'ELEVEN', 'ELIMINATE', 'ELITE', 'ELSE', 'ELSEWHERE', 'EMAIL', 'EMBARK', 'EMBARRASS', 'EMBRACE',
+            'EMERGE', 'EMERGENCY', 'EMIT', 'EMOTION', 'EMPHASIS', 'EMPLOY', 'EMPTY', 'ENABLE', 'ENCOUNTER', 'ENCOURAGE',
+            'END', 'ENEMY', 'ENERGY', 'ENGAGE', 'ENGINE', 'ENGINEER', 'ENHANCE', 'ENJOY', 'ENLARGE', 'ENORMOUS',
+            'ENOUGH', 'ENRICH', 'ENROLL', 'ENSURE', 'ENTER', 'ENTIRE', 'ENTITLE', 'ENTRY', 'ENVELOPE', 'ENVIRONMENT',
+            'ENVY', 'EPISODE', 'EQUAL', 'EQUIP', 'ERA', 'ERASE', 'ERECT', 'ERODE', 'ERROR', 'ERUPT',
+            'ESCAPE', 'ESCORT', 'ESPECIALLY', 'ESSAY', 'ESSENCE', 'ESTABLISH', 'ESTATE', 'ESTIMATE', 'ETERNAL', 'ETHIC',
+            'EVEN', 'EVENING', 'EVENT', 'EVENTUALLY', 'EVER', 'EVERY', 'EVIDENCE', 'EVIL', 'EVOKE', 'EVOLVE',
+            'EXACT', 'EXAGGERATE', 'EXAM', 'EXAMPLE', 'EXCEED', 'EXCELLENT', 'EXCEPT', 'EXCESS', 'EXCHANGE', 'EXCITE',
+            'EXCLUDE', 'EXCUSE', 'EXECUTE', 'EXERCISE', 'EXHAUST', 'EXHIBIT', 'EXIST', 'EXIT', 'EXOTIC', 'EXPAND',
+            'EXPECT', 'EXPENSE', 'EXPERIENCE', 'EXPERIMENT', 'EXPERT', 'EXPIRE', 'EXPLAIN', 'EXPLODE', 'EXPLOIT', 'EXPLORE',
+            'EXPORT', 'EXPOSE', 'EXPRESS', 'EXTEND', 'EXTENT', 'EXTERNAL', 'EXTRA', 'EXTREME', 'EYE', 'FABRIC',
+            'FACE', 'FACILITY', 'FACT', 'FACTOR', 'FACTORY', 'FACULTY', 'FADE', 'FAIL', 'FAINT', 'FAIR',
+            'FAITH', 'FALL', 'FALSE', 'FAME', 'FAMILIAR', 'FAMILY', 'FAMOUS', 'FAN', 'FANCY', 'FANTASY',
+            'FAR', 'FARM', 'FASHION', 'FAST', 'FAT', 'FATE', 'FATHER', 'FATIGUE', 'FAULT', 'FAVOR',
+            'FAVORITE', 'FEAR', 'FEAST', 'FEATHER', 'FEATURE', 'FEBRUARY', 'FEDERAL', 'FEE', 'FEED', 'FEEL',
+            'FELLOW', 'FEMALE', 'FENCE', 'FESTIVAL', 'FETCH', 'FEVER', 'FEW', 'FIBER', 'FICTION', 'FIELD',
+            'FIERCE', 'FIGHT', 'FIGURE', 'FILE', 'FILL', 'FILM', 'FILTER', 'FINAL', 'FINANCE', 'FIND',
+            'FINE', 'FINGER', 'FINISH', 'FIRE', 'FIRM', 'FIRST', 'FISH', 'FIST', 'FIT', 'FIX',
+            'FLAG', 'FLAME', 'FLASH', 'FLAT', 'FLAVOR', 'FLEE', 'FLESH', 'FLIGHT', 'FLIP', 'FLOAT',
+            'FLOCK', 'FLOOD', 'FLOOR', 'FLOW', 'FLOWER', 'FLUID', 'FLUSH', 'FLY', 'FOAM', 'FOCUS',
+            'FOG', 'FOLD', 'FOLK', 'FOLLOW', 'FOND', 'FOOD', 'FOOL', 'FOOT', 'FOR', 'FORCE',
+            'FOREIGN', 'FOREST', 'FOREVER', 'FORGET', 'FORGIVE', 'FORK', 'FORM', 'FORMAL', 'FORMER', 'FORMULA',
+            'FORT', 'FORTH', 'FORTUNE', 'FORWARD', 'FOUND', 'FOUNTAIN', 'FOX', 'FRACTION', 'FRAGILE', 'FRAME',
+            'FRAMEWORK', 'FREE', 'FREEDOM', 'FREEZE', 'FREIGHT', 'FREQUENT', 'FRESH', 'FRIEND', 'FRIGHT', 'FROG',
+            'FROM', 'FRONT', 'FROST', 'FRUIT', 'FRY', 'FUEL', 'FULFILL', 'FULL', 'FUN', 'FUNCTION',
+            'FUND', 'FUNNY', 'FUR', 'FURNACE', 'FURNITURE', 'FURTHER', 'FURY', 'FUSION', 'FUTURE', 'GAIN',
+            'GALAXY', 'GALLERY', 'GALLON', 'GAME', 'GANG', 'GAP', 'GARAGE', 'GARDEN', 'GARLIC', 'GAS',
+            'GATE', 'GATHER', 'GAUGE', 'GAY', 'GAZE', 'GEAR', 'GENE', 'GENERAL', 'GENERATE', 'GENEROUS',
+            'GENIUS', 'GENTLE', 'GENTLEMAN', 'GENUINE', 'GEOLOGY', 'GERM', 'GESTURE', 'GET', 'GHOST', 'GIANT',
+            'GIFT', 'GIGANTIC', 'GIRL', 'GIVE', 'GLAD', 'GLANCE', 'GLASS', 'GLOBE', 'GLORY', 'GLOVE',
+            'GLOW', 'GLUE', 'GO', 'GOAL', 'GOAT', 'GOD', 'GOLD', 'GOLF', 'GOOD', 'GOOSE',
+            'GORGEOUS', 'GOSPEL', 'GOSSIP', 'GOVERN', 'GOWN', 'GRAB', 'GRACE', 'GRADE', 'GRAIN', 'GRAM',
+            'GRAND', 'GRANITE', 'GRANT', 'GRAPE', 'GRAPH', 'GRASP', 'GRASS', 'GRATITUDE', 'GRAVE', 'GRAVITY',
+            'GREAT', 'GREEDY', 'GREEN', 'GREET', 'GREY', 'GRID', 'GRIEF', 'GRIND', 'GRIP', 'GROCER',
+            'GROSS', 'GROUND', 'GROUP', 'GROW', 'GUARD', 'GUESS', 'GUEST', 'GUIDE', 'GUILT', 'GUITAR',
+            'GULF', 'GUM', 'GUN', 'GUY', 'GYM', 'HABIT', 'HAIR', 'HALF', 'HALL', 'HALT',
+            'HAM', 'HAMMER', 'HAND', 'HANDLE', 'HANDY', 'HANG', 'HAPPEN', 'HAPPY', 'HARBOR', 'HARD',
+            'HARDLY', 'HARM', 'HARMONY', 'HARNESS', 'HARSH', 'HARVEST', 'HAT', 'HATCH', 'HATE', 'HAUL',
+            'HAVE', 'HAWK', 'HAY', 'HAZARD', 'HE', 'HEAD', 'HEAL', 'HEALTH', 'HEAP', 'HEAR',
+            'HEART', 'HEAT', 'HEAVEN', 'HEAVY', 'HEEL', 'HEIGHT', 'HELICOPTER', 'HELL', 'HELLO', 'HELMET',
+            'HELP', 'HENCE', 'HER', 'HERALD', 'HERB', 'HERE', 'HERITAGE', 'HERO', 'HIDE', 'HIGH',
+            'HIGHLIGHT', 'HIGHWAY', 'HILL', 'HIM', 'HIMSELF', 'HIND', 'HINT', 'HIP', 'HIRE', 'HIS',
+            'HISTORY', 'HIT', 'HOBBY', 'HOCKEY', 'HOLD', 'HOLE', 'HOLIDAY', 'HOLLOW', 'HOLY', 'HOME',
+            'HOMEWORK', 'HONEST', 'HONEY', 'HONOR', 'HOOK', 'HOPE', 'HORIZON', 'HORN', 'HORROR', 'HORSE',
+            'HOSPITAL', 'HOST', 'HOT', 'HOTEL', 'HOUR', 'HOUSE', 'HOUSEHOLD', 'HOW', 'HOWEVER', 'HUGE',
+            'HUMAN', 'HUMBLE', 'HUMID', 'HUMOR', 'HUNDRED', 'HUNG', 'HUNGER', 'HUNT', 'HURRY', 'HURT',
+            'HUSBAND', 'HUT', 'HYBRID', 'ICE', 'ICON', 'IDEA', 'IDEAL', 'IDENTIFY', 'IDIOM', 'IDLE',
+            'IF', 'IGNORE', 'ILL', 'ILLEGAL', 'ILLNESS', 'IMAGE', 'IMAGINE', 'IMITATE', 'IMMEDIATE', 'IMMENSE',
+            'IMMIGRANT', 'IMMUNE', 'IMPACT', 'IMPLY', 'IMPORT', 'IMPOSE', 'IMPOSSIBLE', 'IMPRESS', 'IMPROVE', 'IN',
+            'INCENTIVE', 'INCH', 'INCIDENT', 'INCLUDE', 'INCOME', 'INCREASE', 'INDEX', 'INDICATE', 'INDIVIDUAL', 'INDOOR',
+            'INDUCE', 'INDUSTRY', 'INFANT', 'INFECT', 'INFER', 'INFINITE', 'INFLATE', 'INFLUENCE', 'INFORM', 'INGREDIENT',
+            'INHABIT', 'INHERIT', 'INITIAL', 'INJECT', 'INJURY', 'INK', 'INLAND', 'INLET', 'INN', 'INNER',
+            'INNOCENT', 'INPUT', 'INQUIRE', 'INSECT', 'INSIDE', 'INSIGHT', 'INSIST', 'INSPECT', 'INSPIRE', 'INSTALL',
+            'INSTANCE', 'INSTANT', 'INSTEAD', 'INSTRUCT', 'INSTRUMENT', 'INSULT', 'INSURANCE', 'INSURE', 'INTACT', 'INTEGER',
+            'INTEGRATE', 'INTEGRITY', 'INTELLECT', 'INTELLIGENT', 'INTEND', 'INTENSE', 'INTENT', 'INTERACT', 'INTEREST', 'INTERFERE',
+            'INTERIOR', 'INTERNAL', 'INTERNATIONAL', 'INTERNET', 'INTERPRET', 'INTERRUPT', 'INTERVAL', 'INTERVENE', 'INTERVIEW', 'INTIMATE',
+            'INTO', 'INTRODUCE', 'INVADE', 'INVENT', 'INVEST', 'INVESTIGATE', 'INVITE', 'INVOLVE', 'IRON', 'IRONY',
+            'ISLAND', 'ISOLATE', 'ISSUE', 'IT', 'ITEM', 'ITS', 'ITSELF', 'JACKET', 'JAM', 'JANUARY',
+            'JAR', 'JAW', 'JAZZ', 'JEALOUS', 'JEANS', 'JELLY', 'JET', 'JEWEL', 'JOB', 'JOIN',
+            'JOINT', 'JOKE', 'JOURNAL', 'JOURNEY', 'JOY', 'JUDGE', 'JUICE', 'JUMP', 'JUNE', 'JUNGLE',
+            'JUNIOR', 'JUNK', 'JUST', 'JUSTICE', 'JUSTIFY', 'KEEP', 'KEY', 'KICK', 'KID', 'KILL',
+            'KIND', 'KING', 'KISS', 'KIT', 'KITCHEN', 'KITE', 'KITTEN', 'KNEE', 'KNIFE', 'KNOCK',
+            'KNOW', 'LABEL', 'LABOR', 'LACK', 'LADDER', 'LADY', 'LAKE', 'LAMP', 'LAND', 'LANE',
+            'LANGUAGE', 'LAP', 'LARGE', 'LASER', 'LAST', 'LATE', 'LATER', 'LATEST', 'LATIN', 'LAUGH',
+            'LAUNCH', 'LAUNDRY', 'LAVA', 'LAW', 'LAWN', 'LAWYER', 'LAY', 'LAYER', 'LAZY', 'LEAD',
+            'LEAF', 'LEAK', 'LEAN', 'LEAP', 'LEARN', 'LEAST', 'LEATHER', 'LEAVE', 'LECTURE', 'LEFT',
+            'LEG', 'LEGAL', 'LEGEND', 'LEISURE', 'LEMON', 'LEND', 'LENGTH', 'LENS', 'LESS', 'LESSON',
+            'LET', 'LETTER', 'LEVEL', 'LIBERAL', 'LIBERTY', 'LIBRARY', 'LICENSE', 'LID', 'LIE', 'LIFE',
+            'LIFT', 'LIGHT', 'LIKE', 'LIMB', 'LIMIT', 'LINE', 'LINEN', 'LINK', 'LION', 'LIP',
+            'LIQUID', 'LIST', 'LISTEN', 'LITERAL', 'LITERATURE', 'LITTLE', 'LIVE', 'LIVELY', 'LOAD', 'LOAF',
+            'LOAN', 'LOBSTER', 'LOCAL', 'LOCATE', 'LOCK', 'LOG', 'LOGIC', 'LONE', 'LONG', 'LOOK',
+            'LOOP', 'LOOSE', 'LORD', 'LORRY', 'LOSE', 'LOSS', 'LOT', 'LOUD', 'LOVE', 'LOW',
+            'LOYAL', 'LUCK', 'LUGGAGE', 'LUMPS', 'LUNCH', 'LUNG', 'LUXURY', 'MACHINE', 'MAD', 'MAGAZINE',
+            'MAGIC', 'MAGNET', 'MAID', 'MAIL', 'MAIN', 'MAINTAIN', 'MAJOR', 'MAKE', 'MALE', 'MAN',
+            'MANAGE', 'MANNER', 'MANUAL', 'MANUFACTURE', 'MANY', 'MAP', 'MARBLE', 'MARCH', 'MARGIN', 'MARK',
+            'MARKET', 'MARRIAGE', 'MARRY', 'MASK', 'MASS', 'MASTER', 'MATCH', 'MATE', 'MATERIAL', 'MATH',
+            'MATTER', 'MATURE', 'MAXIMUM', 'MAY', 'MAYBE', 'MAYOR', 'ME', 'MEAL', 'MEAN', 'MEASURE',
+            'MEAT', 'MEDAL', 'MEDIA', 'MEDICAL', 'MEDICINE', 'MEDIUM', 'MEET', 'MELT', 'MEMBER', 'MEMORY',
+            'MENTAL', 'MENTION', 'MENU', 'MERGE', 'MERIT', 'MERRY', 'MESS', 'MESSAGE', 'METAL', 'METHOD',
+            'METRE', 'MIDDLE', 'MIGHT', 'MILE', 'MILITARY', 'MILK', 'MILL', 'MIND', 'MINE', 'MINERAL',
+            'MINIMUM', 'MINISTER', 'MINOR', 'MINUTE', 'MIRACLE', 'MIRROR', 'MISERY', 'MISS', 'MISTAKE', 'MIX',
+            'MIXTURE', 'MOBILE', 'MODEL', 'MODERN', 'MODEST', 'MODIFY', 'MOMENT', 'MONEY', 'MONITOR', 'MONKEY',
+            'MONTH', 'MOOD', 'MOON', 'MORAL', 'MORE', 'MORNING', 'MOSQUE', 'MOST', 'MOTHER', 'MOTION',
+            'MOTOR', 'MOUNTAIN', 'MOUSE', 'MOUTH', 'MOVE', 'MOVIE', 'MUCH', 'MUD', 'MUG', 'MULTIPLE',
+            'MULTIPLY', 'MUM', 'MURDER', 'MUSCLE', 'MUSEUM', 'MUSHROOM', 'MUSIC', 'MUST', 'MUTUAL', 'MY',
+            'MYSTERY', 'NAIL', 'NAIVE', 'NAKED', 'NAME', 'NARROW', 'NATION', 'NATIVE', 'NATURAL', 'NATURE',
+            'NAVY', 'NEAR', 'NEARLY', 'NEAT', 'NECESSARY', 'NECK', 'NEED', 'NEEDLE', 'NEGATIVE', 'NEGLECT',
+            'NEIGHBOR', 'NEITHER', 'NEPHEW', 'NERVE', 'NEST', 'NET', 'NETWORK', 'NEUTRAL', 'NEVER', 'NEW',
+            'NEWS', 'NEWSPAPER', 'NEXT', 'NICE', 'NIGHT', 'NINE', 'NO', 'NOBLE', 'NOBODY', 'NOD',
+            'NOISE', 'NONE', 'NOON', 'NOR', 'NORMAL', 'NORTH', 'NOSE', 'NOT', 'NOTE', 'NOTHING',
+            'NOTICE', 'NOTION', 'NOVEL', 'NOW', 'NOWHERE', 'NUCLEAR', 'NUMBER', 'NURSE', 'NUT', 'OAK',
+            'OBEY', 'OBJECT', 'OBLIGE', 'OBSERVE', 'OBTAIN', 'OBVIOUS', 'OCCASION', 'OCCUPY', 'OCCUR', 'OCEAN',
+            'OCTOBER', 'ODD', 'OF', 'OFF', 'OFFENSE', 'OFFER', 'OFFICE', 'OFFICER', 'OFFICIAL', 'OFTEN',
+            'OIL', 'OKAY', 'OLD', 'OMIT', 'ON', 'ONCE', 'ONE', 'ONION', 'ONLY', 'ONTO',
+            'OPEN', 'OPERATE', 'OPINION', 'OPPORTUNITY', 'OPPOSE', 'OPTION', 'OR', 'ORANGE', 'ORBIT', 'ORDER',
+            'ORDINARY', 'ORGAN', 'ORGANIZE', 'ORIGIN', 'ORIGINAL', 'OTHER', 'OTHERWISE', 'OUGHT', 'OUR', 'OURS',
+            'OURSELVES', 'OUT', 'OUTCOME', 'OUTDOOR', 'OUTER', 'OUTLINE', 'OUTPUT', 'OUTSIDE', 'OUTSTANDING', 'OVER',
+            'OVERALL', 'OVERCOME', 'OVERFLOW', 'OVERHEAD', 'OVERHEAR', 'OVERLAP', 'OVERLOOK', 'OVERNIGHT', 'OVERPOWER', 'OVERRIDE',
+            'OVERRULE', 'OVERTAKE', 'OVERTHROW', 'OVERTIME', 'OVERTURN', 'OVERVIEW', 'OVERWEIGHT', 'OVERWHELM', 'OWE', 'OWN',
+            'OWNER', 'OX', 'OXYGEN', 'PACK', 'PACKAGE', 'PAGE', 'PAIN', 'PAINT', 'PAIR', 'PALACE',
+            'PALE', 'PAN', 'PANEL', 'PANIC', 'PANTS', 'PAPER', 'PARADE', 'PARAGRAPH', 'PARALLEL', 'PARENT',
+            'PARK', 'PARLIAMENT', 'PART', 'PARTICIPATE', 'PARTICLE', 'PARTICULAR', 'PARTLY', 'PARTNER', 'PARTY', 'PASS',
+            'PASSAGE', 'PASSENGER', 'PASSION', 'PASSPORT', 'PAST', 'PASTE', 'PAT', 'PATCH', 'PATH', 'PATIENT',
+            'PATTERN', 'PAUSE', 'PAVE', 'PAY', 'PEACE', 'PEAK', 'PEAR', 'PEASANT', 'PECULIAR', 'PEN',
+            'PENALTY', 'PENCIL', 'PENETRATE', 'PENNY', 'PENSION', 'PEOPLE', 'PEPPER', 'PER', 'PERCEIVE', 'PERCENT',
+            'PERFECT', 'PERFORM', 'PERHAPS', 'PERIOD', 'PERMANENT', 'PERMIT', 'PERSIST', 'PERSON', 'PERSONAL', 'PERSUADE',
+            'PET', 'PETROL', 'PHASE', 'PHENOMENON', 'PHILOSOPHY', 'PHONE', 'PHOTO', 'PHRASE', 'PHYSICAL', 'PHYSICS',
+            'PIANO', 'PICK', 'PICTURE', 'PIE', 'PIECE', 'PIG', 'PILE', 'PILL', 'PILLOW', 'PILOT',
+            'PIN', 'PINK', 'PINT', 'PIONEER', 'PIPE', 'PISTOL', 'PIT', 'PITCH', 'PITY', 'PLACE',
+            'PLAIN', 'PLAN', 'PLANE', 'PLANET', 'PLANT', 'PLASTIC', 'PLATE', 'PLATFORM', 'PLAY', 'PLEA',
+            'PLEAD', 'PLEASE', 'PLEASURE', 'PLENTY', 'PLOT', 'PLUG', 'PLUNGE', 'PLURAL', 'PLUS', 'POCKET',
+            'POEM', 'POET', 'POETRY', 'POINT', 'POISON', 'POLE', 'POLICE', 'POLICY', 'POLISH', 'POLITE',
+            'POLITICAL', 'POLITICS', 'POLL', 'POLLUTE', 'POOL', 'POOR', 'POP', 'POPULAR', 'POPULATION', 'PORCH',
+            'PORT', 'PORTION', 'PORTRAIT', 'POSITION', 'POSITIVE', 'POSSESS', 'POSSIBLE', 'POST', 'POSTER', 'POT',
+            'POTATO', 'POTENTIAL', 'POUND', 'POUR', 'POVERTY', 'POWDER', 'POWER', 'PRACTICAL', 'PRACTICE', 'PRAISE',
+            'PRAY', 'PRAYER', 'PRECEDE', 'PRECIOUS', 'PRECISE', 'PREDICT', 'PREFER', 'PREGNANT', 'PREPARE', 'PRESCRIBE',
+            'PRESENCE', 'PRESENT', 'PRESERVE', 'PRESIDENT', 'PRESS', 'PRESSURE', 'PRETEND', 'PRETTY', 'PREVENT', 'PREVIOUS',
+            'PRICE', 'PRIDE', 'PRIEST', 'PRIMARY', 'PRIME', 'PRINCE', 'PRINCIPAL', 'PRINCIPLE', 'PRINT', 'PRIOR',
+            'PRIORITY', 'PRISON', 'PRIVATE', 'PRIVILEGE', 'PRIZE', 'PROBABLE', 'PROBLEM', 'PROCEDURE', 'PROCEED', 'PROCESS',
+            'PRODUCE', 'PRODUCT', 'PROFESSION', 'PROFIT', 'PROGRAM', 'PROGRESS', 'PROJECT', 'PROMINENT', 'PROMISE', 'PROMOTE',
+            'PROMPT', 'PRONOUN', 'PRONOUNCE', 'PROOF', 'PROPER', 'PROPERTY', 'PROPORTION', 'PROPOSAL', 'PROPOSE', 'PROSPECT',
+            'PROTECT', 'PROTEIN', 'PROTEST', 'PROUD', 'PROVE', 'PROVIDE', 'PROVINCE', 'PROVISION', 'PUBLIC', 'PUBLISH',
+            'PUDDING', 'PULL', 'PULSE', 'PUMP', 'PUNCH', 'PUNCTUAL', 'PUNISH', 'PUPIL', 'PURCHASE', 'PURE',
+            'PURPLE', 'PURPOSE', 'PURSE', 'PURSUE', 'PUSH', 'PUT', 'PUZZLE', 'QUALIFY', 'QUALITY', 'QUANTITY',
+            'QUARREL', 'QUARTER', 'QUEEN', 'QUESTION', 'QUICK', 'QUIET', 'QUIT', 'QUITE', 'QUOTE', 'RABBIT',
+            'RACE', 'RACIAL', 'RACK', 'RADAR', 'RADIATION', 'RADICAL', 'RADIO', 'RAIL', 'RAILWAY', 'RAIN',
+            'RAISE', 'RALLY', 'RANDOM', 'RANGE', 'RANK', 'RAPID', 'RARE', 'RAT', 'RATE', 'RATHER',
+            'RATIO', 'RAW', 'RAY', 'REACH', 'REACT', 'READ', 'READY', 'REAL', 'REALITY', 'REALIZE',
+            'REALLY', 'REASON', 'REBEL', 'RECALL', 'RECEIVE', 'RECENT', 'RECIPE', 'RECOGNIZE', 'RECOMMEND', 'RECORD',
+            'RECOVER', 'RECRUIT', 'RED', 'REDUCE', 'REFER', 'REFINE', 'REFLECT', 'REFORM', 'REFRESH', 'REFUGE',
+            'REFUSE', 'REGARD', 'REGIME', 'REGION', 'REGISTER', 'REGRET', 'REGULAR', 'REGULATE', 'REINFORCE', 'REJECT',
+            'RELATE', 'RELATION', 'RELATIVE', 'RELAX', 'RELEASE', 'RELEVANT', 'RELIABLE', 'RELIEF', 'RELIEVE', 'RELIGION',
+            'RELY', 'REMAIN', 'REMARK', 'REMEDY', 'REMEMBER', 'REMIND', 'REMOTE', 'REMOVE', 'RENDER', 'RENEW',
+            'RENT', 'REPAIR', 'REPEAT', 'REPLACE', 'REPLY', 'REPORT', 'REPRESENT', 'REPUBLIC', 'REPUTATION', 'REQUEST',
+            'REQUIRE', 'RESCUE', 'RESEARCH', 'RESEMBLE', 'RESERVE', 'RESIDE', 'RESIGN', 'RESIST', 'RESOLVE', 'RESORT',
+            'RESOURCE', 'RESPECT', 'RESPOND', 'RESPONSE', 'RESPONSIBLE', 'REST', 'RESTAURANT', 'RESTORE', 'RESTRAIN', 'RESTRICT',
+            'RESULT', 'RETAIL', 'RETAIN', 'RETIRE', 'RETREAT', 'RETURN', 'REVEAL', 'REVENUE', 'REVIEW', 'REVISE',
+            'REVOLUTION', 'REWARD', 'RHYTHM', 'RICE', 'RICH', 'RID', 'RIDE', 'RIDGE', 'RIDICULOUS', 'RIFLE',
+            'RIGHT', 'RIGID', 'RING', 'RIPE', 'RISE', 'RISK', 'RIVAL', 'RIVER', 'ROAD', 'ROAR',
+            'ROAST', 'ROB', 'ROBOT', 'ROCK', 'ROCKET', 'ROD', 'ROLE', 'ROLL', 'ROMAN', 'ROMANCE',
+            'ROOF', 'ROOM', 'ROOT', 'ROPE', 'ROSE', 'ROUGH', 'ROUND', 'ROUTE', 'ROUTINE', 'ROW',
+            'ROYAL', 'RUB', 'RUBBER', 'RUBBISH', 'RUBY', 'RUG', 'RUIN', 'RULE', 'RUMOR', 'RUN',
+            'RURAL', 'RUSH', 'RUST', 'SACK', 'SACRED', 'SAD', 'SADDLE', 'SAFE', 'SAID', 'SAIL',
+            'SAINT', 'SAKE', 'SALAD', 'SALARY', 'SALE', 'SALESMAN', 'SALT', 'SAME', 'SAMPLE', 'SAND',
+            'SANDWICH', 'SAT', 'SATELLITE', 'SATISFY', 'SAUCE', 'SAVE', 'SAW', 'SAY', 'SCALE', 'SCAN',
+            'SCARCE', 'SCARE', 'SCATTER', 'SCENE', 'SCHEME', 'SCHOLAR', 'SCHOOL', 'SCIENCE', 'SCISSORS', 'SCORE',
+            'SCRATCH', 'SCREAM', 'SCREEN', 'SCREW', 'SCRIPT', 'SEA', 'SEAL', 'SEARCH', 'SEASON', 'SEAT',
+            'SECOND', 'SECRET', 'SECRETARY', 'SECTION', 'SECTOR', 'SECURE', 'SEE', 'SEED', 'SEEK', 'SEEM',
+            'SEIZE', 'SELECT', 'SELL', 'SEMESTER', 'SEND', 'SENIOR', 'SENSE', 'SENTENCE', 'SEPARATE', 'SEPTEMBER',
+            'SERIES', 'SERIOUS', 'SERVANT', 'SERVE', 'SERVICE', 'SESSION', 'SET', 'SETTLE', 'SEVEN', 'SEVERAL',
+            'SEVERE', 'SEW', 'SEX', 'SHADE', 'SHADOW', 'SHAKE', 'SHALL', 'SHAME', 'SHAPE', 'SHARE',
+            'SHARP', 'SHAVE', 'SHE', 'SHEEP', 'SHEET', 'SHELF', 'SHELL', 'SHELTER', 'SHIELD', 'SHIFT',
+            'SHINE', 'SHIP', 'SHIRT', 'SHOCK', 'SHOE', 'SHOOT', 'SHOP', 'SHORE', 'SHORT', 'SHOT',
+            'SHOULD', 'SHOULDER', 'SHOUT', 'SHOW', 'SHRINK', 'SHUT', 'SHY', 'SICK', 'SIDE', 'SIGHT',
+            'SIGN', 'SIGNAL', 'SIGNIFICANT', 'SILENCE', 'SILENT', 'SILK', 'SILLY', 'SILVER', 'SIMILAR', 'SIMPLE',
+            'SIMPLY', 'SIN', 'SINCE', 'SING', 'SINGLE', 'SINK', 'SIR', 'SISTER', 'SIT', 'SITE',
+            'SITUATION', 'SIX', 'SIZE', 'SKETCH', 'SKI', 'SKILL', 'SKIN', 'SKIRT', 'SKY', 'SLAM',
+            'SLAVE', 'SLEEP', 'SLEEVE', 'SLICE', 'SLIDE', 'SLIGHT', 'SLIM', 'SLIP', 'SLOPE', 'SLOW',
+            'SMALL', 'SMART', 'SMELL', 'SMILE', 'SMOKE', 'SMOOTH', 'SNAKE', 'SNOW', 'SO', 'SOAP',
+            'SOCIAL', 'SOCIETY', 'SOCK', 'SODA', 'SOFA', 'SOFT', 'SOFTWARE', 'SOIL', 'SOLAR', 'SOLDIER',
+            'SOLE', 'SOLID', 'SOLUTION', 'SOLVE', 'SOME', 'SOMEBODY', 'SOMEHOW', 'SOMEONE', 'SOMETHING', 'SOMETIMES',
+            'SOMEWHAT', 'SOMEWHERE', 'SON', 'SONG', 'SOON', 'SORRY', 'SORT', 'SOUL', 'SOUND', 'SOUP',
+            'SOURCE', 'SOUTH', 'SPACE', 'SPADE', 'SPAN', 'SPANISH', 'SPARE', 'SPARK', 'SPEAK', 'SPECIAL',
+            'SPECIES', 'SPECIFIC', 'SPECTACLE', 'SPEECH', 'SPEED', 'SPELL', 'SPEND', 'SPHERE', 'SPICE', 'SPIDER',
+            'SPILL', 'SPIN', 'SPIRIT', 'SPLIT', 'SPOIL', 'SPOKE', 'SPONSOR', 'SPOON', 'SPORT', 'SPOT',
+            'SPREAD', 'SPRING', 'SPY', 'SQUARE', 'SQUEEZE', 'STABLE', 'STAFF', 'STAGE', 'STAIR', 'STAKE',
+            'STAMP', 'STAND', 'STANDARD', 'STAR', 'STARE', 'START', 'STATE', 'STATEMENT', 'STATION', 'STATUE',
+            'STATUS', 'STAY', 'STEADY', 'STEAK', 'STEAL', 'STEAM', 'STEEL', 'STEEP', 'STEM', 'STEP',
+            'STICK', 'STIFF', 'STILL', 'STIMULATE', 'STIR', 'STOCK', 'STOMACH', 'STONE', 'STOP', 'STORE',
+            'STORM', 'STORY', 'STOVE', 'STRAIGHT', 'STRANGE', 'STRATEGY', 'STRAW', 'STREAM', 'STREET', 'STRENGTH',
+            'STRESS', 'STRETCH', 'STRICT', 'STRIKE', 'STRING', 'STRIP', 'STROKE', 'STRONG', 'STRUCTURE', 'STRUGGLE',
+            'STUDENT', 'STUDIO', 'STUDY', 'STUFF', 'STUPID', 'STYLE', 'SUBJECT', 'SUBMIT', 'SUBSTANCE', 'SUBSTITUTE',
+            'SUBTLE', 'SUBURB', 'SUBWAY', 'SUCCEED', 'SUCCESS', 'SUCH', 'SUDDEN', 'SUFFER', 'SUGAR', 'SUGGEST',
+            'SUIT', 'SUITABLE', 'SUITE', 'SUM', 'SUMMER', 'SUN', 'SUNDAY', 'SUPER', 'SUPERIOR', 'SUPPLY',
+            'SUPPORT', 'SUPPOSE', 'SURE', 'SURFACE', 'SURGE', 'SURGEON', 'SURPRISE', 'SURRENDER', 'SURROUND', 'SURVEY',
+            'SURVIVE', 'SUSPECT', 'SUSPEND', 'SUSTAIN', 'SWALLOW', 'SWEAR', 'SWEAT', 'SWEATER', 'SWEEP', 'SWEET',
+            'SWELL', 'SWIFT', 'SWIM', 'SWING', 'SWITCH', 'SWORD', 'SYMBOL', 'SYMPATHY', 'SYMPTOM', 'SYSTEM',
+            'TABLE', 'TACKLE', 'TACTIC', 'TAIL', 'TAKE', 'TALE', 'TALENT', 'TALK', 'TALL', 'TANK',
+            'TAPE', 'TARGET', 'TASK', 'TASTE', 'TAX', 'TAXI', 'TEA', 'TEACH', 'TEAM', 'TEAR',
+            'TECHNICAL', 'TECHNIQUE', 'TECHNOLOGY', 'TEEN', 'TELEPHONE', 'TELEVISION', 'TELL', 'TEMPER', 'TEMPERATURE', 'TEMPLE',
+            'TEMPORARY', 'TEMPT', 'TEN', 'TEND', 'TENDER', 'TENNIS', 'TENT', 'TERM', 'TERRIBLE', 'TERRITORY',
+            'TERROR', 'TEST', 'TEXT', 'THAN', 'THANK', 'THAT', 'THE', 'THEATRE', 'THEIR', 'THEM',
+            'THEME', 'THEMSELVES', 'THEN', 'THEORY', 'THERAPY', 'THERE', 'THEREFORE', 'THESE', 'THEY', 'THICK',
+            'THIEF', 'THIN', 'THING', 'THINK', 'THIRD', 'THIRST', 'THIS', 'THOROUGH', 'THOSE', 'THOUGH',
+            'THOUGHT', 'THOUSAND', 'THREAD', 'THREAT', 'THREE', 'THRILL', 'THROAT', 'THROUGH', 'THROW', 'THUMB',
+            'THUNDER', 'THUS', 'TICKET', 'TIDE', 'TIDY', 'TIE', 'TIGER', 'TIGHT', 'TILL', 'TIME',
+            'TIN', 'TINY', 'TIP', 'TIRED', 'TISSUE', 'TITLE', 'TO', 'TOAST', 'TODAY', 'TOE',
+            'TOGETHER', 'TOILET', 'TOKEN', 'TOLD', 'TOMORROW', 'TONE', 'TONGUE', 'TONIGHT', 'TOO', 'TOOL',
+            'TOOTH', 'TOP', 'TOPIC', 'TORCH', 'TORNADO', 'TORTURE', 'TOTAL', 'TOUCH', 'TOUGH', 'TOUR',
+            'TOURIST', 'TOWARDS', 'TOWEL', 'TOWER', 'TOWN', 'TOY', 'TRACE', 'TRACK', 'TRACTOR', 'TRADE',
+            'TRADITION', 'TRAFFIC', 'TRAGEDY', 'TRAIL', 'TRAIN', 'TRAINING', 'TRANSACTION', 'TRANSFER', 'TRANSFORM', 'TRANSITION',
+            'TRANSLATE', 'TRANSMIT', 'TRANSPORT', 'TRAP', 'TRASH', 'TRAVEL', 'TRAY', 'TREAT', 'TREATY', 'TREE',
+            'TREMENDOUS', 'TREND', 'TRIAL', 'TRIBE', 'TRICK', 'TRIP', 'TROOP', 'TROUBLE', 'TRUCK', 'TRUE',
+            'TRULY', 'TRUMPET', 'TRUST', 'TRUTH', 'TRY', 'TUBE', 'TUESDAY', 'TUNE', 'TUNNEL', 'TURN',
+            'TWICE', 'TWIN', 'TWIST', 'TYPE', 'TYPICAL', 'UGLY', 'ULTIMATE', 'UMBRELLA', 'UNABLE', 'UNCLE',
+            'UNDER', 'UNDERGO', 'UNDERSTAND', 'UNDERTAKE', 'UNEMPLOYMENT', 'UNEXPECTED', 'UNFAIR', 'UNFORTUNATE', 'UNHAPPY', 'UNIFORM',
+            'UNION', 'UNIQUE', 'UNIT', 'UNITED', 'UNIVERSE', 'UNIVERSITY', 'UNKNOWN', 'UNLESS', 'UNLIKE', 'UNLIKELY',
+            'UNTIL', 'UNUSUAL', 'UP', 'UPDATE', 'UPON', 'UPPER', 'UPSET', 'URBAN', 'URGE', 'US',
+            'USE', 'USED', 'USEFUL', 'USELESS', 'USER', 'USUAL', 'USUALLY', 'VACATION', 'VACUUM', 'VAGUE',
+            'VALID', 'VALLEY', 'VALUABLE', 'VALUE', 'VAN', 'VANISH', 'VAPOR', 'VARIABLE', 'VARIATION', 'VARIETY',
+            'VARIOUS', 'VARY', 'VAST', 'VEGETABLE', 'VEHICLE', 'VEIL', 'VEIN', 'VELOCITY', 'VENDOR', 'VENTURE',
+            'VERB', 'VERIFY', 'VERSION', 'VERTICAL', 'VERY', 'VESSEL', 'VETERAN', 'VIA', 'VICE', 'VICTIM',
+            'VICTORY', 'VIDEO', 'VIEW', 'VILLAGE', 'VIOLENCE', 'VIOLENT', 'VIOLET', 'VIRTUE', 'VIRUS', 'VISIBLE',
+            'VISION', 'VISIT', 'VISITOR', 'VISUAL', 'VITAL', 'VIVID', 'VOCABULARY', 'VOICE', 'VOLCANO', 'VOLT',
+            'VOLUME', 'VOLUNTARY', 'VOLUNTEER', 'VOTE', 'VOYAGE', 'WAGE', 'WAIST', 'WAIT', 'WAITER', 'WAKE',
+            'WALK', 'WALL', 'WANDER', 'WANT', 'WAR', 'WAREHOUSE', 'WARM', 'WARN', 'WASH', 'WASTE',
+            'WATCH', 'WATER', 'WAVE', 'WAY', 'WE', 'WEAK', 'WEALTH', 'WEAPON', 'WEAR', 'WEATHER',
+            'WEDDING', 'WEDNESDAY', 'WEEK', 'WEEKEND', 'WEIGH', 'WEIGHT', 'WELCOME', 'WELFARE', 'WELL', 'WEST',
+            'WESTERN', 'WET', 'WHALE', 'WHAT', 'WHATEVER', 'WHEAT', 'WHEEL', 'WHEN', 'WHENEVER', 'WHERE',
+            'WHEREAS', 'WHETHER', 'WHICH', 'WHILE', 'WHIP', 'WHISKER', 'WHISPER', 'WHISTLE', 'WHITE', 'WHO',
+            'WHOLE', 'WHOM', 'WHOSE', 'WHY', 'WIDE', 'WIFE', 'WILD', 'WILL', 'WILLING', 'WIN',
+            'WIND', 'WINDOW', 'WINE', 'WING', 'WINTER', 'WIRE', 'WISDOM', 'WISE', 'WISH', 'WITH',
+            'WITHIN', 'WITHOUT', 'WITNESS', 'WOLF', 'WOMAN', 'WONDER', 'WOOD', 'WOOL', 'WORD', 'WORK',
+            'WORKER', 'WORLD', 'WORRY', 'WORTH', 'WOULD', 'WOUND', 'WRAP', 'WRECK', 'WRESTLE', 'WRITE',
+            'WRITER', 'WRONG', 'YARD', 'YEAR', 'YELLOW', 'YES', 'YESTERDAY', 'YET', 'YOU', 'YOUNG',
+            'YOUR', 'YOURS', 'YOURSELF', 'YOUTH', 'ZEAL', 'ZEBRA', 'ZERO', 'ZONE', 'ZOO'
         ];
 
         class StrandsGame {
@@ -375,7 +673,6 @@
                 this.grid = [];
                 this.foundWords = [];
                 this.selectedLetters = [];
-                this.allWords = [...WORDS_LIST];
                 this.gameWords = [];
                 this.hintsUsed = 0;
                 this.maxHints = 3;
@@ -390,6 +687,7 @@
                 this.selectGameWords();
                 this.renderGrid();
                 this.updateDisplay();
+                this.showMessage("New game started! Find all the words.", "info");
             }
 
             generateGrid() {
@@ -406,13 +704,16 @@
                 let attempts = 0;
                 const maxAttempts = 100;
 
-                while (this.gameWords.length < 7 && attempts < maxAttempts) {
-                    const word = this.allWords[Math.floor(Math.random() * this.allWords.length)];
+                while (this.gameWords.length < 6 && attempts < maxAttempts) {
+                    const word = WORDS_LIST[Math.floor(Math.random() * WORDS_LIST.length)];
                     if (!this.gameWords.includes(word) && word.length >= 4 && word.length <= 8) {
                         this.gameWords.push(word);
                     }
                     attempts++;
                 }
+                
+                // Shuffle the game words for variety
+                this.gameWords.sort(() => Math.random() - 0.5);
             }
 
             renderGrid() {
@@ -445,9 +746,12 @@
                 } else {
                     if (this.selectedLetters.length === 0 || this.isAdjacent(this.selectedLetters[this.selectedLetters.length - 1], index)) {
                         this.selectedLetters.push(index);
+                    } else {
+                        this.showMessage("Letters must be adjacent!", "error");
                     }
                 }
                 this.renderGrid();
+                this.updateSelectedWordDisplay();
             }
 
             isAdjacent(index1, index2) {
@@ -462,7 +766,7 @@
 
             submitWord() {
                 if (this.selectedLetters.length < 4) {
-                    this.showMessage('Word must be at least 4 letters long', 'error');
+                    this.showMessage("Word must be at least 4 letters long", "error");
                     return;
                 }
 
@@ -474,15 +778,15 @@
                         indices: [...this.selectedLetters]
                     });
                     this.selectedLetters = [];
-                    this.showMessage(`Found: ${word}!`, 'success');
+                    this.showMessage(`Found: "${word}"!`, "success");
                     
                     if (this.foundWords.length === this.gameWords.length) {
-                        this.showMessage('🎉 Congratulations! You found all words!', 'success');
+                        this.showMessage('🎉 Congratulations! You found all words!', "success");
                     }
                 } else if (this.gameWords.includes(word)) {
-                    this.showMessage('Already found that word!', 'error');
+                    this.showMessage("Already found that word!", "error");
                 } else {
-                    this.showMessage('Word not in puzzle!', 'error');
+                    this.showMessage(`"${word}" not in puzzle!`, "error");
                 }
                 
                 this.renderGrid();
@@ -492,22 +796,23 @@
             deselectAll() {
                 this.selectedLetters = [];
                 this.renderGrid();
+                this.updateSelectedWordDisplay();
             }
 
             hint() {
                 if (this.hintsUsed >= this.maxHints) {
-                    this.showMessage('No more hints available!', 'error');
+                    this.showMessage("No more hints available!", "error");
                     return;
                 }
 
                 const unfoundWords = this.gameWords.filter(w => !this.foundWords.some(fw => fw.word === w));
                 if (unfoundWords.length === 0) {
-                    this.showMessage('No more words to find!', 'info');
+                    this.showMessage("No more words to find!", "info");
                     return;
                 }
 
                 const hintWord = unfoundWords[Math.floor(Math.random() * unfoundWords.length)];
-                this.showMessage(`Hint: Look for "${hintWord}"`, 'info');
+                this.showMessage(`Hint: Look for a ${hintWord.length}-letter word`, "info");
                 this.hintsUsed++;
                 this.updateDisplay();
             }
@@ -532,10 +837,43 @@
                 const difficulty = Math.round((this.foundWords.length / this.gameWords.length) * 100);
                 const diffLevel = difficulty < 33 ? 'Hard' : difficulty < 66 ? 'Medium' : 'Easy';
                 document.getElementById('difficulty').textContent = diffLevel;
+                
+                // Update hint count
+                document.getElementById('hintCount').textContent = this.maxHints - this.hintsUsed;
+                document.getElementById('remainingHints').textContent = this.maxHints - this.hintsUsed;
+            }
+
+            updateSelectedWordDisplay() {
+                const selectedWord = this.getSelectedWord();
+                document.getElementById('selectedWord').textContent = selectedWord || '-';
             }
         }
 
+        // Initialize game
         let game = new StrandsGame();
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'Enter':
+                    game.submitWord();
+                    break;
+                case 'Escape':
+                    game.deselectAll();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    game.hint();
+                    break;
+                case 'n':
+                case 'N':
+                    if (e.ctrlKey) {
+                        e.preventDefault();
+                        game.newGame();
+                    }
+                    break;
+            }
+        });
     </script>
 </body>
 </html>
