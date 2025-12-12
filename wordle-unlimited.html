@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <link rel="stylesheet" href="styles.css">
+<script src="app.js" defer></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MN6HG02SQW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MN6HG02SQW');
+</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wordle Unlimited - Play the popular Wordle word-guessing game for free. Unlimited gameplay, no daily limits, and more!">
+    <meta name="keywords" content="wordle game, word game, unlimited wordle, 5-letter word game, vocabulary game">
+    <meta name="author" content="Strands Unlimited">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://strandsunlimited.github.io/wordle-unlimited.html">
+    <meta property="og:title" content="Wordle Unlimited - Free Word Game">
+    <meta property="og:description" content="Play Wordle, the popular word-guessing game, for free with unlimited gameplay and no paywall.">
+    <meta property="og:image" content="https://strandsunlimited.github.io/og-image.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://strandsunlimited.github.io/wordle-unlimited.html">
+    <meta property="twitter:title" content="Wordle Unlimited - Free Word Game">
+    <meta property="twitter:description" content="Play Wordle, the popular word-guessing game, for free with unlimited gameplay and no paywall.">
+    <meta property="twitter:image" content="https://strandsunlimited.github.io/og-image.png">
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='18' font-weight='bold' text-anchor='middle' fill='%23fff'%3EW%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%23000'/%3E%3Ctext x='90' y='120' font-family='monospace' font-size='100' font-weight='bold' text-anchor='middle' fill='%23fff'%3EW%3C/text%3E%3C/svg%3E">
+    <link rel="canonical" href="https://strandsunlimited.github.io/wordle-unlimited.html">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <title>Wordle Unlimited | Free Word Game</title>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Wordle Unlimited",
+        "description": "Play Wordle, the popular word-guessing game, for free with unlimited gameplay and no paywall.",
+        "url": "https://strandsunlimited.github.io/wordle-unlimited.html",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Strands Unlimited",
+            "url": "https://strandsunlimited.github.io/"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Strands Unlimited",
+        "url": "https://strandsunlimited.github.io/",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://strandsunlimited.github.io/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" fill="currentColor"/>
+                    <text x="16" y="22" font-family="monospace" font-size="18" font-weight="bold" text-anchor="middle" fill="var(--bg-primary)">S</text>
+                </svg>
+                <span class="logo-text">STRANDS UNLIMITED</span>
+            </a>
+            <nav class="nav">
+                <div class="nav-dropdown">
+                    <button class="nav-link nav-dropdown-btn">
+                        Games
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="nav-dropdown-content">
+                        <a href="/">Strands Unlimited</a>
+                        <a href="/crossword-unlimited.html">Crossword Unlimited</a>
+                        <a href="/wordle-unlimited.html">Wordle Unlimited</a>
+                        <a href="/connections-unlimited.html">Connections Unlimited</a>
+                        <a href="/spelling-bee.html">Spelling Bee</a>
+                        <a href="/letter-boxed.html">Letter Boxed</a>
+                        <a href="/tiles.html">Tiles</a>
+                        <a href="/vertex.html">Vertex</a>
+                    </div>
+                </div>                
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How to Play</a>
+                <a href="#about" class="nav-link">About</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2"></path>
+                    <path d="M12 20v2"></path>
+                    <path d="m4.93 4.93 1.41 1.41"></path>
+                    <path d="m17.66 17.66 1.41 1.41"></path>
+                    <path d="M2 12h2"></path>
+                    <path d="M20 12h2"></path>
+                    <path d="m6.34 17.66-1.41 1.41"></path>
+                    <path d="m19.07 4.93-1.41 1.41"></path>
+                </svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                </svg>
+            </button>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav">
+        <span class="mobile-nav-section">Games</span>
+        <a href="/" class="mobile-nav-link">Strands Unlimited</a>
+        <a href="/crossword-unlimited.html" class="mobile-nav-link">Crossword Unlimited</a>
+        <a href="/wordle-unlimited.html" class="mobile-nav-link">Wordle Unlimited</a>
+        <a href="/connections-unlimited.html" class="mobile-nav-link">Connections Unlimited</a>
+        <a href="/spelling-bee.html" class="mobile-nav-link">Spelling Bee</a>
+        <a href="/letter-boxed.html" class="mobile-nav-link">Letter Boxed</a>
+        <a href="/tiles.html" class="mobile-nav-link">Tiles</a>
+        <a href="/vertex.html" class="mobile-nav-link">Vertex</a>
+        <span class="mobile-nav-section">Navigation</span>
+        <a href="#features" class="mobile-nav-link">Features</a>
+        <a href="#how-it-works" class="mobile-nav-link">How to Play</a>
+        <a href="#about" class="mobile-nav-link">About</a>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">
+                    <span class="badge">FREE GAME</span>
+                </div>
+                <h1 class="hero-title">Wordle<br><span class="highlight">Unlimited</span></h1>
+                <p class="hero-subtitle">Guess the 5-letter word in six tries or less. Play endless new games without waiting for the next day.</p>
+                
+                <div class="game-container" id="gameContainer">
+                    <div class="game-loading" id="gameLoading">
+                        <div class="game-spinner"></div>
+                        <span>Loading Wordle Game...</span>
+                    </div>
+                    <iframe 
+                        src="https://strandsunlimited.github.io/wordle-unlimited-game.html" 
+                        class="game-iframe" 
+                        id="gameIframe"
+                        title="Wordle Game"
+                        allow="fullscreen"
+                        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                        onload="document.getElementById('gameLoading').style.display='none';"
+                    ></iframe>
+                </div>
+
+                <div class="game-info">
+                    <div class="info-section">
+                        <h3 class="info-title">How to Play Wordle</h3>
+                        <p class="info-text">Wordle is a simple word-guessing game. You have six attempts to guess a secret five-letter word. After each guess, the tiles will change color to show you how close your guess was to the word.</p>
+                        <ul class="info-list">
+                            <li>Guess the 5-letter word in six tries.</li>
+                            <li>A **Green** tile means the letter is correct and in the right spot.</li>
+                            <li>A **Yellow** tile means the letter is in the word but in the wrong spot.</li>
+                            <li>A **Gray** tile means the letter is not in the word at all.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3 class="info-title">Tips & Strategies</h3>
+                        <p class="info-text">Maximize your chances of winning with these proven strategies:</p>
+                        <ul class="info-list">
+                            <li>Use a strong starting word with common vowels (e.g., **A**-**R**-**I**-**S**-**E** or **A**-**D**-**I**-**E**-**U**).</li>
+                            <li>Avoid reusing gray letters in subsequent guesses.</li>
+                            <li>If a letter is yellow, try to place it in a different position on your next guess.</li>
+                            <li>Focus on eliminating consonants in early guesses.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="unlimited-games">
+            <div class="container">
+                <h2 class="section-title">Unlimited Games 🎮</h2>
+                <div class="features-grid">
+                    <a href="/" class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        </div>
+                        <h3 style="color: #1E90FF;">Strands Unlimited</h3>
+                        <p>Find theme words and spangrams in this addictive word search game.</p>
+                    </a>
+                    <a href="/crossword-unlimited.html" class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+                        </div>
+                        <h3 style="color: #3CB371;">Crossword Unlimited</h3>
+                        <p>Solve daily crossword puzzles with unlimited hints and no paywall.</p>
+                    </a>
+                    <a href="/wordle-unlimited.html" class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6v6l4 2"/></svg>
+                        </div>
+                        <h3 style="color: #FF8C00;">Wordle Unlimited</h3>
+                        <p>Guess the five-letter word with unlimited games per day.</p>
+                    </a>
+                    <a href="/connections-unlimited.html" class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="8" cy="8" r="3"></circle>
+                                <circle cx="16" cy="8" r="3"></circle>
+                                <circle cx="8" cy="16" r="3"></circle>
+                                <circle cx="16" cy="16" r="3"></circle>
+                                <line x1="8" y1="8" x2="16" y2="8"></line>
+                                <line x1="8" y1="16" x2="16" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h3 style="color: #9370DB;">Connections Unlimited</h3>
+                        <p>Group words into four categories in this challenging puzzle game.</p>
+                    </a>
+                    <a href="/spelling-bee.html" class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                        </div>
+                        <h3 style="color: #DC143C;">Spelling Bee</h3>
+                        <p>Create as many words as possible using seven unique letters.</p>
+                    </a>
+                    <a href="/letter-boxed.html" class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2" ry="2"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
+                        </div>
+                        <h3 style="color: #8A2BE2;">Letter Boxed</h3>
+                        <p>Connect letters around a square to form words and solve the puzzle.</p>
+                    </a>
+                    <a href="/tiles.html" class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        </div>
+                        <h3 style="color: #FFD700;">Tiles</h3>
+                        <p>Match patterns and colors in this relaxing visual puzzle game.</p>
+                    </a>
+                    <a href="/vertex.html" class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+                        </div>
+                        <h3 style="color: #00CED1;">Vertex</h3>
+                        <p>Connect dots to reveal hidden pictures in this creative puzzle game.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <h2 class="section-title">Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                        <h3>Unlimited Play</h3>
+                        <p>No more waiting! Start a new game immediately after finishing the last one.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </div>
+                        <h3>Fast Loading</h3>
+                        <p>Minimal load times so you can jump straight into the next word challenge.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                            </svg>
+                        </div>
+                        <h3>Dark Mode</h3>
+                        <p>Easy on the eyes with automatic theme detection for comfortable gameplay.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Classic Fun</h3>
+                        <p>The original five-letter, six-try challenge you know and love.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How to Play</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">01</div>
+                        <h3>Make a Guess</h3>
+                        <p>Enter any valid five-letter word and press Enter to submit your guess.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">02</div>
+                        <h3>Check Colors</h3>
+                        <p>The tiles will color-code to show correct letters/positions (green, yellow, gray).</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">03</div>
+                        <h3>Solve the Word</h3>
+                        <p>Use the color clues to narrow down possibilities and solve the secret word in six tries.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Letters</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">Tries</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">Unlimited</div>
+                        <div class="stat-label">Gameplay</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" id="about">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-widget">
+                    <h4 class="widget-title">About</h4>
+                    <p class="widget-text">Strands Unlimited is a free platform offering unlimited access to Wordle and other popular word games. Play endless puzzles without limits or subscriptions.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-widget">
+                    <h4 class="widget-title">Games</h4>
+                    <ul class="widget-links">
+                        <li><a href="/">Strands Unlimited</a></li>
+                        <li><a href="/crossword-unlimited.html">Crossword Unlimited</a></li>
+                        <li><a href="/wordle-unlimited.html">Wordle Unlimited</a></li>
+                        <li><a href="/connections-unlimited.html">Connections Unlimited</a></li>
+                        <li><a href="/spelling-bee.html">Spelling Bee</a></li>
+                        <li><a href="/letter-boxed.html">Letter Boxed</a></li>
+                        <li><a href="/tiles.html">Tiles</a></li>
+                        <li><a href="/vertex.html">Vertex</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-widget">
+                    <h4 class="widget-title">Pages</h4>
+                    <ul class="widget-links">
+                        <li><a href="/about.html">About</a></li>
+                        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-widget">
+                    <h4 class="widget-title">Subscribe</h4>
+                    <p class="widget-text">Get daily puzzle reminders and game updates.</p>
+                    <form class="subscribe-form" id="subscribeForm">
+                        <input type="email" placeholder="Enter your email" class="subscribe-input" required>
+                        <button type="submit" class="subscribe-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="m12 5 7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="32" height="32" fill="currentColor"/>
+                        <text x="16" y="22" font-family="monospace" font-size="18" font-weight="bold" text-anchor="middle" fill="var(--bg-primary)">S</text>
+                    </svg>
+                    <span>STRANDS UNLIMITED</span>
+                </div>
+                <p class="copyright">&copy; 2025 Strands Unlimited. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span id="toastMessage">Game loaded successfully!</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
